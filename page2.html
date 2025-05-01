@@ -4,26 +4,42 @@
   <meta charset="UTF-8">
   <title>Topics</title>
   <style>
-     @keyframes drift {
+    @keyframes drift {
       0% {
         background-position: 0 0, 0 0, 0 0;
       }
       100% {
-        background-position: 100px 100px, 80px 60px, 60px 120px;
+        background-position: 400px 300px, 300px 200px, 200px 500px;
       }
     }
-    body {
+
+    body.light {
       background-color: #f4f4f4;
       background-image:
         radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
         radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
         radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
       background-size: 20px 20px, 40px 40px, 70px 70px;
-
       background-position: center, center, center;
+      animation: drift 30s linear infinite;
+    }
+
+    body.night {
+      background-color: #0a0a1f;
+      background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+        radial-gradient(circle, rgba(200, 200, 255, 0.2) 1px, transparent 1px),
+        radial-gradient(circle, rgba(100, 255, 255, 0.15) 1px, transparent 1px);
+      background-size: 20px 20px, 40px 40px, 70px 70px;
+      background-position: center, center, center;
+      animation: drift 30s linear infinite;
+    }
+
+    body {
       font-family: "Courier New", monospace;
       color: #222;
       margin: 40px;
+      transition: background-color 1s ease, color 0.5s ease;
     }
 
     h1 {
@@ -56,11 +72,18 @@
       margin-bottom: 20px;
       display: block;
     }
+
+    .toggle-hint {
+      font-size: 0.9em;
+      opacity: 0.6;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 
-<body>
+<body class="light">
 
+  <p class="toggle-hint">(click anywhere to toggle day/night mode)</p>
   <span id="typewriter"></span>
 
   <h1>This is Page 2 for categories</h1>
@@ -71,14 +94,13 @@
     <li><a href="dirac.html">Dirac and physics</a></li>
     <li><a href="math.html">General Math</a></li>
     <li><a href="thoughts.html">Thoughts</a></li>
-    <li><a href="sharing.html">Sharing...</a></li> 
+    <li><a href="sharing.html">Sharing...</a></li>
   </ul>
 
   <p><a href="index.html">← Back to home</a></p>
 
-
   <script>
-    const text = "> So you choosed to came here.";
+    const text = "> So you chose to come here.";
     let i = 0;
     const speed = 60;
 
@@ -91,6 +113,17 @@
     }
 
     typeWriter();
+
+
+    document.body.addEventListener("click", () => {
+      if (document.body.classList.contains("light")) {
+        document.body.classList.remove("light");
+        document.body.classList.add("night");
+      } else {
+        document.body.classList.remove("night");
+        document.body.classList.add("light");
+      }
+    });
   </script>
 
 </body>

@@ -2,27 +2,37 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Anna's Page</title>
+  <title>Anna's web</title>
   <style>
     body {
-      background-color: #e0e0e0;
+      background-color: #fefefe;
       font-family: "Courier New", monospace;
-      color: black;
       margin: 40px;
     }
     h1 {
-      color: navy;
+      color: darkblue;
     }
     a {
-      color: blue;
+      color: darkgreen;
+      text-decoration: none;
+    }
+    .box {
+      border: 1px dashed gray;
+      padding: 20px;
+      max-width: 600px;
     }
   </style>
 </head>
 <body>
-  <h1>I'm Anna.</h1>
-  <p>This is my website.</p>
-  <p>I like Dirac.</p>
-  <hr>
-  <p><a href="page2.html">More.</a></p>
+  <h1>This is my website.</h1>
+  <div class="box">
+    <p>I write about...</p>
+    <ul>
+      <li>Dirac (and others)</li>
+      <li>Math?</li>
+      <li>Thoughts</li>
+    </ul>
+    <p><a href="page2.html">Click here to continue...</a></p>
+  </div>
 </body>
 </html>

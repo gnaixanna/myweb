@@ -4,92 +4,107 @@
   <meta charset="UTF-8">
   <title>Topics</title>
   <style>
-    @keyframes drift {
-      0% {
-        background-position: 0 0, 0 0, 0 0;
-      }
-      100% {
-        background-position: 400px 300px, 300px 200px, 200px 500px;
-      }
+  @keyframes drift {
+    0% {
+      background-position: 0 0, 0 0, 0 0;
     }
-       body.night {
-      color: #eee;
+    100% {
+      background-position: 400px 300px, 300px 200px, 200px 500px;
     }
+  }
 
-    body.night h1 {
-      color: #aaccff;
-    }
+  body.light {
+    background-color: #f4f4f4;
+    background-image:
+      radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
+      radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
+    background-size: 20px 20px, 40px 40px, 70px 70px;
+    background-position: center, center, center;
+    animation: drift 30s linear infinite;
+  }
 
-    body.night a {
-      color: #88ffcc;
-    }
+  body.night {
+    background-color: #0a0a1f;
+    background-image:
+      radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+      radial-gradient(circle, rgba(200, 200, 255, 0.2) 1px, transparent 1px),
+      radial-gradient(circle, rgba(100, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px, 40px 40px, 70px 70px;
+    background-position: center, center, center;
+    animation: drift 30s linear infinite;
+    color: #e5e5e5;
+  }
 
-    body.light {
-      background-color: #f4f4f4;
-      background-image:
-        radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
-        radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
-        radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
-      background-size: 20px 20px, 40px 40px, 70px 70px;
-      background-position: center, center, center;
-      animation: drift 30s linear infinite;
-    }
+  body.night h1 {
+    color: #aaccff;
+  }
 
-    body.night {
-      background-color: #0a0a1f;
-      background-image:
-        radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-        radial-gradient(circle, rgba(200, 200, 255, 0.2) 1px, transparent 1px),
-        radial-gradient(circle, rgba(100, 255, 255, 0.15) 1px, transparent 1px);
-      background-size: 20px 20px, 40px 40px, 70px 70px;
-      background-position: center, center, center;
-      animation: drift 30s linear infinite;
-    }
+  body.night h2 {
+    color: #bbccff;
+  }
 
-    body {
-      font-family: "Courier New", monospace;
-      color: #222;
-      margin: 40px;
-      transition: background-color 1s ease, color 0.5s ease;
-    }
+  body.night a {
+    color: #88ffcc;
+  }
 
-    h1 {
-      color: darkblue;
-    }
+  body.night #typewriter {
+    color: #bbb;
+  }
 
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
+  body.night .toggle-hint {
+    color: #999;
+  }
 
-    li {
-      margin-bottom: 10px;
-    }
+  body {
+    font-family: "Courier New", monospace;
+    color: #222;
+    margin: 40px;
+    transition: background-color 1s ease, color 0.5s ease;
+  }
 
-    a {
-      color: darkgreen;
-      font-weight: bold;
-      text-decoration: none;
-    }
+  h1 {
+    color: darkblue;
+  }
 
-    a:hover {
-      text-decoration: underline;
-    }
+  h2 {
+    color: #333;
+  }
 
-    #typewriter {
-      font-style: italic;
-      color: #444;
-      white-space: pre;
-      margin-bottom: 20px;
-      display: block;
-    }
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
 
-    .toggle-hint {
-      font-size: 0.9em;
-      opacity: 0.6;
-      margin-bottom: 10px;
-    }
-  </style>
+  li {
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: darkgreen;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  #typewriter {
+    font-style: italic;
+    color: #444;
+    white-space: pre;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .toggle-hint {
+    font-size: 0.9em;
+    opacity: 0.6;
+    margin-bottom: 10px;
+  }
+</style>
+
 </head>
 
 <body class="light">

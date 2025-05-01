@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Topics</title>
   <style>
-     body {
+    body {
       background-color: #f4f4f4;
       background-image:
         radial-gradient(circle, rgba(180, 200, 255, 0.15) 1px, transparent 1px),
@@ -20,24 +20,41 @@
     h1 {
       color: darkblue;
     }
+
     ul {
       list-style-type: none;
       padding-left: 0;
     }
+
     li {
       margin-bottom: 10px;
     }
+
     a {
       color: darkgreen;
       font-weight: bold;
       text-decoration: none;
     }
+
     a:hover {
       text-decoration: underline;
     }
+
+    #typewriter {
+      font-style: italic;
+      color: #444;
+      white-space: pre;
+      margin-bottom: 20px;
+      display: block;
+    }
   </style>
 </head>
+
 <body>
+
+  <!-- 打字感欢迎句 -->
+  <span id="typewriter"></span>
+
   <h1>This is Page 2 for categories</h1>
   <p>You made it. Congrats.</p>
 
@@ -46,10 +63,28 @@
     <li><a href="dirac.html">Dirac and physics</a></li>
     <li><a href="math.html">General Math</a></li>
     <li><a href="thoughts.html">Thoughts</a></li>
-    <li><a href="thoughts.html">Sharing...</a></li>
+    <li><a href="sharing.html">Sharing...</a></li> 
   </ul>
 
   <p><a href="index.html">← Back to home</a></p>
+
+
+  <script>
+    const text = "> So you came here. Let me show you some fragments.";
+    let i = 0;
+    const speed = 60;
+
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typewriter").textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+
+    typeWriter();
+  </script>
+
 </body>
 </html>
 

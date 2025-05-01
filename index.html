@@ -48,7 +48,9 @@
 
   <p><span id="typewriter"></span></p>
 
-  <embed src="song.mid" hidden="true" autostart="true" loop="true">
+  <audio autoplay loop hidden>
+    <source src="song.mid" type="audio/midi">
+  </audio>
 
   <h1>This is my website.</h1>
 
@@ -63,7 +65,7 @@
   </div>
 
   <script>
-    const text = "> A huge welcome to you cause I have no idea who else will be here expect myself.";
+    const text = "> A huge welcome to you cause I have no idea who else will be here except myself.";
     let i = 0;
     const speed = 60;
 

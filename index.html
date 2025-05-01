@@ -4,84 +4,96 @@
   <meta charset="UTF-8">
   <title>Anna's web</title>
   <style>
-    @keyframes drift {
-      0% {
-        background-position: 0 0, 0 0, 0 0;
-      }
-      100% {
-        background-position: 400px 300px, 300px 200px, 200px 500px;
-      }
+  @keyframes drift {
+    0% {
+      background-position: 0 0, 0 0, 0 0;
     }
-
-    body.night {
-      color: #eee;
+    100% {
+      background-position: 400px 300px, 300px 200px, 200px 500px;
     }
+  }
 
-    body.night h1 {
-      color: #aaccff;
-    }
+  body.light {
+    background-color: #f4f4f4;
+    background-image:
+      radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
+      radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
+    background-size: 20px 20px, 40px 40px, 70px 70px;
+    background-position: center, center, center;
+    animation: drift 30s linear infinite;
+  }
 
-    body.night a {
-      color: #88ffcc;
-    }
+  body.night {
+    background-color: #0a0a1f;
+    background-image:
+      radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+      radial-gradient(circle, rgba(200, 200, 255, 0.2) 1px, transparent 1px),
+      radial-gradient(circle, rgba(100, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px, 40px 40px, 70px 70px;
+    background-position: center, center, center;
+    animation: drift 30s linear infinite;
+    color: #e5e5e5;
+  }
 
+  body.night h1 {
+    color: #aaccff;
+  }
 
-    body.light {
-      background-color: #f4f4f4;
-      background-image:
-        radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
-        radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
-        radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
-      background-size: 20px 20px, 40px 40px, 70px 70px;
-      background-position: center, center, center;
-      animation: drift 30s linear infinite;
-    }
+  body.night a {
+    color: #88ffcc;
+  }
 
-    body.night {
-      background-color: #0a0a1f;
-      background-image:
-        radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-        radial-gradient(circle, rgba(200, 200, 255, 0.2) 1px, transparent 1px),
-        radial-gradient(circle, rgba(100, 255, 255, 0.15) 1px, transparent 1px);
-      background-size: 20px 20px, 40px 40px, 70px 70px;
-      background-position: center, center, center;
-      animation: drift 30s linear infinite;
-    }
+  body.night .box {
+    border-color: #888;
+    color: #ddd;
+  }
 
-    body {
-      font-family: "Courier New", monospace;
-      color: #222;
-      margin: 40px;
-      transition: background-color 1s ease, color 0.5s ease;
-    }
+  body.night #typewriter {
+    color: #bbb;
+  }
 
-    h1 {
-      color: darkblue;
-    }
+  body.night em,
+  body.night .toggle-hint,
+  body.night marquee {
+    color: #999;
+  }
 
-    a {
-      color: darkgreen;
-      text-decoration: none;
-    }
+  body {
+    font-family: "Courier New", monospace;
+    color: #222;
+    margin: 40px;
+    transition: background-color 1s ease, color 0.5s ease;
+  }
 
-    .box {
-      border: 1px dashed gray;
-      padding: 20px;
-      max-width: 600px;
-    }
+  h1 {
+    color: darkblue;
+  }
 
-    #typewriter {
-      font-style: italic;
-      color: #444;
-      white-space: pre;
-    }
+  a {
+    color: darkgreen;
+    text-decoration: none;
+  }
 
-    .toggle-hint {
-      font-size: 0.9em;
-      opacity: 0.6;
-      margin-bottom: 20px;
-    }
-  </style>
+  .box {
+    border: 1px dashed gray;
+    padding: 20px;
+    max-width: 600px;
+  }
+
+  #typewriter {
+    font-style: italic;
+    color: #444;
+    white-space: pre;
+  }
+
+  .toggle-hint {
+    font-size: 0.9em;
+    opacity: 0.6;
+    margin-bottom: 20px;
+  }
+</style>
+
 </head>
 
 

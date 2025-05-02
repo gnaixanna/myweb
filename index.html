@@ -12,9 +12,9 @@
     body.light {
       background-color: #f4f4f4;
       background-image:
-        radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
-        radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
-        radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
+        radial-gradient(circle, rgba(120, 150, 200, 0.4) 1px, transparent 1px),
+        radial-gradient(circle, rgba(200, 120, 120, 0.4) 1px, transparent 1px),
+        radial-gradient(circle, rgba(150, 220, 180, 0.4) 1px, transparent 1px);
       background-size: 20px 20px, 40px 40px, 70px 70px;
       background-position: center, center, center;
       animation: drift 30s linear infinite;
@@ -145,51 +145,55 @@
     }
     typeWriter();
 
-    // music toggle
-    const audio = document.getElementById("bgm");
-    const musicBtn = document.getElementById("music-toggle");
-    let isPlaying = false;
-    musicBtn.addEventListener("click", () => {
-      if (isPlaying) {
-        audio.pause();
-        musicBtn.textContent = "🎵";
-      } else {
-        audio.play();
-        musicBtn.textContent = "⏸️";
-      }
-      isPlaying = !isPlaying;
-    });
+    // DOM ready
+    window.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById("bgm");
+      const musicBtn = document.getElementById("music-toggle");
+      const modeBtn = document.getElementById("mode-toggle");
+      const output = document.getElementById("terminal-output");
+      const input = document.getElementById("terminal-cmd");
 
-    // mode toggle
-    const modeBtn = document.getElementById("mode-toggle");
-    modeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light");
-      document.body.classList.toggle("night");
-    });
-
-    // terminal
-    const output = document.getElementById("terminal-output");
-    const input = document.getElementById("terminal-cmd");
-    const commands = {
-      help: "Available commands:\n  dirac\n  math\n  about\n  beauty\n  clear",
-      dirac: "Paul Dirac: 'Age is, of course, a fever chill/ That every physicist must fear./ He's better dead than living still/ When once he's past his thirtieth year'",
-      math: "The mathematician plays a game in which he himself invents the rules while the physicist plays a game in which the rules are provided by nature, but as time goes on it becomes increasingly evident that the rules which the mathematician finds interesting are the same as those which nature has chosen.",
-      beauty:"Any artificial sense of beauty must start from nature itself. There is a law in nature, and the reason why this universal law can describe beauty is because it is similar to the divine order of a certain creative process. The refinement of this divine order has brought about all things in the world, and therefore all things must contain a certain inner harmonious beauty. This shows that the beauty in the equation should also obey the same laws of beauty as nature. Therefore, since our work is to describe nature through equations, it is obvious that the results of our work, if correct, should be beautiful. If a person cannot understand or feel nature, he cannot understand beauty and can only wander in disharmony."
-      about: "This is a digital archive of thought fragments.",
-      clear: ""
-    };
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const cmd = input.value.trim();
-        output.textContent += "\n> " + cmd;
-        if (commands.hasOwnProperty(cmd)) {
-          output.textContent += "\n" + commands[cmd];
+      // music toggle
+      let isPlaying = false;
+      musicBtn.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+          musicBtn.textContent = "🎵";
         } else {
-          output.textContent += "\nUnknown command. Type 'help'.";
+          audio.play();
+          musicBtn.textContent = "⏸️";
         }
-        input.value = "";
-        output.scrollTop = output.scrollHeight;
-      }
+        isPlaying = !isPlaying;
+      });
+
+      // mode toggle
+      modeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        document.body.classList.toggle("night");
+      });
+
+      // terminal
+      const commands = {
+        help: "Available commands:\n  dirac\n  math\n  about\n  clear",
+        dirac: "Paul Dirac: A silent symmetry in a chaotic world.",
+        math: "Math is a structured form of confusion we find comforting.",
+        about: "This is a digital notebook of thought fragments, made by Anna.",
+        clear: ""
+      };
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const cmd = input.value.trim();
+          output.textContent += "\n> " + cmd;
+          if (commands.hasOwnProperty(cmd)) {
+            output.textContent += "\n" + commands[cmd];
+          } else {
+            output.textContent += "\nUnknown command. Type 'help'.";
+          }
+          input.value = "";
+          output.scrollTop = output.scrollHeight;
+        }
+      });
     });
   </script>
 

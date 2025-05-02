@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anna's web</title>
   <style>
     @keyframes drift {
@@ -174,28 +175,56 @@
 
       // terminal
       const commands = {
-        help: "Available commands:\n  dirac\n  math\n  about\n  clear",
-        dirac: "Paul Dirac: A silent symmetry in a chaotic world.",
-        math: "Math is a structured form of confusion we find comforting.",
-        about: "This is a digital notebook of thought fragments, made by Anna.",
+        help: "Available commands:\n  dirac\n  math\n  about\n  beauty\n  guess\n  clear\n  exit (only during guess)",
+        dirac: "Paul Dirac: 'Living is worthwhile if one can contribute in some small way to this endless chain of progress.'",
+        math: "The mathematician plays a game in which he himself invents the rules while the physicist plays a game in which the rules are provided by nature, but as time goes on it becomes increasingly evident that the rules which the mathematician finds interesting are the same as those which nature has chosen",
+        beauty: "Any artificial sense of beauty must start from nature itself. There is a law in nature, and the reason why this universal law can describe beauty is because it is similar to the divine order of a certain creative process. The refinement of this divine order has brought about all things in the world, and therefore all things must contain a certain inner harmonious beauty. This shows that the beauty in the equation should also obey the same laws of beauty as nature. Therefore, since our work is to describe nature through equations, it is obvious that the results of our work, if correct, should be beautiful. If a person cannot understand or feel nature, he cannot understand beauty and can only wander in disharmony.",
+        about: "This is a digital notebook of thought fragments.",
         clear: ""
       };
-
+      
+      let targetNumber = null;
+      let guessCount = 0;
+      let isGuessing = false;
+      
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           const cmd = input.value.trim();
           output.textContent += "\n> " + cmd;
-          if (commands.hasOwnProperty(cmd)) {
+      
+          if (isGuessing) {
+            if (cmd.toLowerCase() === "exit") {
+              isGuessing = false;
+              output.textContent += "\nExited the guessing game.";
+            } else {
+              const num = parseInt(cmd);
+              guessCount++;
+              if (isNaN(num)) {
+                output.textContent += "\nPlease enter a valid number.";
+              } else if (num < targetNumber) {
+                output.textContent += "\nToo low.";
+              } else if (num > targetNumber) {
+                output.textContent += "\nToo high.";
+              } else {
+                output.textContent += `\nCorrect! You guessed it in ${guessCount} tries.`;
+                isGuessing = false;
+              }
+            }
+          } else if (cmd === "guess") {
+            targetNumber = Math.floor(Math.random() * 1000) + 1;
+            guessCount = 0;
+            isGuessing = true;
+            output.textContent += "\nGuess a number between 1 and 1000.";
+          } else if (commands.hasOwnProperty(cmd)) {
             output.textContent += "\n" + commands[cmd];
           } else {
             output.textContent += "\nUnknown command. Type 'help'.";
           }
+      
           input.value = "";
           output.scrollTop = output.scrollHeight;
         }
       });
-    });
   </script>
-
 </body>
 </html>

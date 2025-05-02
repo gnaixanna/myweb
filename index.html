@@ -156,6 +156,32 @@
       font-size: 13px;
     }
 
+    #guestbook {
+      position: relative;
+      overflow: hidden;
+    }
+    #guestbook::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 255, 0, 0.03),
+        rgba(0, 255, 0, 0.03) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events: none;
+      z-index: 10;
+      animation: flicker 1.2s infinite;
+    }
+    
+    @keyframes flicker {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.25; }
+    }
+
+
   </style>
 </head>
 <body class="light">

@@ -107,9 +107,17 @@
 
   <p><span id="typewriter"></span></p>
 
-  <audio autoplay loop>
-    <source src="song.mp3" type="audio/mpeg">
+  <audio id="bgm" loop>
+  <source src="song.mp3" type="audio/mpeg">
   </audio>
+
+  <script>
+    document.body.addEventListener("click", () => {
+      const audio = document.getElementById("bgm");
+      audio.play();
+    });
+  </script>
+
 
   <h1>This is my website.</h1>
 

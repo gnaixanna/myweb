@@ -227,5 +227,109 @@
       });
       });
   </script>
+  <!-- Chatboard -->
+  <div id="guestbook">
+    <h2>Guestbook</h2>
+    <form id="message-form">
+      <input type="text" id="name" placeholder="Your name (optional)">
+      <textarea id="message" placeholder="Leave a message..." required></textarea>
+      <button type="submit">Post</button>
+    </form>
+    <div id="messages"></div>
+  </div>
+  
+  <!-- style-->
+  <style>
+  #guestbook {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 50px;
+    max-width: 500px;
+  }
+  #guestbook h2 {
+    margin-top: 0;
+  }
+  #guestbook input, #guestbook textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #222;
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 4px;
+  }
+  #guestbook button {
+    padding: 8px 16px;
+    background: #00cc99;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #guestbook button:hover {
+    background: #00aa77;
+  }
+  .message-entry {
+    border-top: 1px dashed #999;
+    margin-top: 10px;
+    padding-top: 10px;
+    font-family: monospace;
+    white-space: pre-wrap;
+  }
+  </style>
+  
+  <!-- Firebase-->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyDr-UAh4lVpvTbaU9dPIQ8tt43BgWNGlss",
+      authDomain: "anna-chatboard.firebaseapp.com",
+      projectId: "anna-chatboard",
+      storageBucket: "anna-chatboard.firebasestorage.app",
+      messagingSenderId: "904262380023",
+      appId: "1:904262380023:web:2b2b4c2cae5d239b7426f2",
+      measurementId: "G-FYM4S1R710"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  
+    const form = document.getElementById('message-form');
+    const nameInput = document.getElementById('name');
+    const messageInput = document.getElementById('message');
+    const messagesDiv = document.getElementById('messages');
+  
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = nameInput.value.trim() || 'Anonymous';
+      const message = messageInput.value.trim();
+      if (message) {
+        await addDoc(collection(db, 'messages'), {
+          name,
+          message,
+          timestamp: serverTimestamp()
+        });
+        messageInput.value = '';
+      }
+    });
+  
+    const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+    onSnapshot(q, (snapshot) => {
+      messagesDiv.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement('div');
+        const time = data.timestamp?.toDate().toLocaleString() || 'just now';
+        div.className = 'message-entry';
+        div.innerHTML = `<strong>${data.name}</strong> <em>${time}</em><br>${data.message}`;
+        messagesDiv.appendChild(div);
+      });
+    });
+  </script>
+
 </body>
 </html>

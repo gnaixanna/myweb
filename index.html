@@ -2,14 +2,12 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anna's web</title>
   <style>
     @keyframes drift {
       0% { background-position: 0 0, 0 0, 0 0; }
       100% { background-position: 400px 300px, 300px 200px, 200px 500px; }
     }
-
     body.light {
       background-color: #f4f4f4;
       background-image:
@@ -20,7 +18,6 @@
       background-position: center, center, center;
       animation: drift 30s linear infinite;
     }
-
     body.night {
       background-color: #0a0a1f;
       background-image:
@@ -32,26 +29,22 @@
       animation: drift 30s linear infinite;
       color: #e5e5e5;
     }
-
     body.night h1 { color: #aaccff; }
     body.night a { color: #88ffcc; }
     body.night .box { border-color: #888; color: #ddd; }
     body.night #typewriter { color: #bbb; }
     body.night em, .night .toggle-hint, .night marquee { color: #999; }
-
     body {
       font-family: "Courier New", monospace;
       color: #222;
       margin: 40px;
       transition: background-color 1s ease, color 0.5s ease;
     }
-
     h1 { color: darkblue; }
     a { color: darkgreen; text-decoration: none; }
     .box { border: 1px dashed gray; padding: 20px; max-width: 600px; }
     #typewriter { font-style: italic; color: #444; white-space: pre; }
     .toggle-hint { font-size: 0.9em; opacity: 0.6; margin-bottom: 20px; }
-
     #music-toggle, #mode-toggle {
       position: fixed;
       bottom: 20px;
@@ -64,11 +57,9 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-
     #music-toggle { right: 20px; }
     #mode-toggle { right: 80px; }
     #music-toggle:hover, #mode-toggle:hover { background: #bbb; }
-
     #terminal {
       background: #111;
       color: #0f0;
@@ -98,22 +89,63 @@
       outline: none;
       flex: 1;
     }
+    #chatbox-container {
+      position: fixed;
+      right: 20px;
+      bottom: 80px;
+      width: 300px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      z-index: 999;
+    }
+    body.night #guestbook input,
+    body.night #guestbook textarea {
+      background: #111;
+      color: #eee;
+      border-color: #444;
+    }
+
+    #guestbook input, #guestbook textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #666;
+      border-radius: 4px;
+    }
+    #guestbook button {
+      padding: 8px 16px;
+      background: #00cc99;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #guestbook button:hover {
+      background: #00aa77;
+    }
+    .message-entry {
+      border-top: 1px dashed #999;
+      margin-top: 10px;
+      padding-top: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body class="light">
-
   <p><em>// Welcome to the archive of myself and, astonishingly, it is still updating.</em></p>
   <marquee behavior="alternate">Hi but who are you?</marquee>
   <p class="toggle-hint">(toggle modes or music below)</p>
   <p><span id="typewriter"></span></p>
-
   <audio id="bgm" loop>
     <source src="song.mp3" type="audio/mpeg">
   </audio>
-
   <button id="music-toggle" title="Toggle music">🎵</button>
   <button id="mode-toggle" title="Toggle mode">🌙</button>
-
   <h1>This is my website.</h1>
   <div class="box">
     <p>I write about...</p>
@@ -124,18 +156,16 @@
     </ul>
     <p><a href="page2.html">Click here to continue...</a></p>
   </div>
-
   <div id="terminal">
     <pre id="terminal-output">Type 'help' to get started.</pre>
     <div id="terminal-input">
       <span>&gt; </span><input type="text" id="terminal-cmd" autofocus>
     </div>
   </div>
-
-  <!-- Guestbook container -->
-  <div id="chatbox-container" style="position: fixed; bottom: 90px; left: 20px; max-width: 300px;">
-    <div id="guestbook" style="background: rgba(255, 255, 255, 0.05); border: 1px solid #aaa; border-radius: 8px; padding: 20px;">
-      <h2>Guestbook</h2>
+  <!-- notepad -->
+  <div id="chatbox-container">
+    <div id="guestbook">
+      <h3>Guestbook</h3>
       <form id="message-form">
         <input type="text" id="name" placeholder="Your name (optional)">
         <textarea id="message" placeholder="Leave a message..." required></textarea>
@@ -144,7 +174,7 @@
       <div id="messages"></div>
     </div>
   </div>
-
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -153,7 +183,7 @@
       apiKey: "AIzaSyDr-UAh4lVpvTbaU9dPIQ8tt43BgWNGlss",
       authDomain: "anna-chatboard.firebaseapp.com",
       projectId: "anna-chatboard",
-      storageBucket: "anna-chatboard.firebasestorage.app",
+      storageBucket: "anna-chatboard.appspot.com",
       messagingSenderId: "904262380023",
       appId: "1:904262380023:web:2b2b4c2cae5d239b7426f2",
       measurementId: "G-FYM4S1R710"
@@ -194,6 +224,100 @@
       });
     });
   </script>
+  <script>
+    // typewriter
+    const text = "> A huge welcome to you cause I have no idea who else will be here except myself.";
+    let i = 0;
+    const speed = 60;
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typewriter").textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+    typeWriter();
 
+    // DOM ready
+    window.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById("bgm");
+      const musicBtn = document.getElementById("music-toggle");
+      const modeBtn = document.getElementById("mode-toggle");
+      const output = document.getElementById("terminal-output");
+      const input = document.getElementById("terminal-cmd");
+
+      // music toggle
+      let isPlaying = false;
+      musicBtn.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+          musicBtn.textContent = "🎵";
+        } else {
+          audio.play();
+          musicBtn.textContent = "⏸️";
+        }
+        isPlaying = !isPlaying;
+      });
+
+      // mode toggle
+      modeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        document.body.classList.toggle("night");
+      });
+
+      // terminal
+      const commands = {
+        help: "Available commands:\n  dirac\n  math\n  about\n  beauty\n  guess\n  clear\n  exit (only during guess)",
+        dirac: "Paul Dirac: 'Living is worthwhile if one can contribute in some small way to this endless chain of progress.'",
+        math: "The mathematician plays a game in which he himself invents the rules while the physicist plays a game in which the rules are provided by nature, but as time goes on it becomes increasingly evident that the rules which the mathematician finds interesting are the same as those which nature has chosen",
+        beauty: "Any artificial sense of beauty must start from nature itself. There is a law in nature, and the reason why this universal law can describe beauty is because it is similar to the divine order of a certain creative process. The refinement of this divine order has brought about all things in the world, and therefore all things must contain a certain inner harmonious beauty. This shows that the beauty in the equation should also obey the same laws of beauty as nature. Therefore, since our work is to describe nature through equations, it is obvious that the results of our work, if correct, should be beautiful. If a person cannot understand or feel nature, he cannot understand beauty and can only wander in disharmony.",
+        about: "This is a digital notebook of thought fragments.",
+        clear: ""
+      };
+      
+      let targetNumber = null;
+      let guessCount = 0;
+      let isGuessing = false;
+      
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const cmd = input.value.trim();
+          output.textContent += "\n> " + cmd;
+      
+          if (isGuessing) {
+            if (cmd.toLowerCase() === "exit") {
+              isGuessing = false;
+              output.textContent += "\nExited the guessing game.";
+            } else {
+              const num = parseInt(cmd);
+              guessCount++;
+              if (isNaN(num)) {
+                output.textContent += "\nPlease enter a valid number.";
+              } else if (num < targetNumber) {
+                output.textContent += "\nToo low.";
+              } else if (num > targetNumber) {
+                output.textContent += "\nToo high.";
+              } else {
+                output.textContent += `\nCorrect! You guessed it in ${guessCount} tries.`;
+                isGuessing = false;
+              }
+            }
+          } else if (cmd === "guess") {
+            targetNumber = Math.floor(Math.random() * 1000) + 1;
+            guessCount = 0;
+            isGuessing = true;
+            output.textContent += "\nGuess a number between 1 and 1000.";
+          } else if (commands.hasOwnProperty(cmd)) {
+            output.textContent += "\n" + commands[cmd];
+          } else {
+            output.textContent += "\nUnknown command. Type 'help'.";
+          }
+      
+          input.value = "";
+          output.scrollTop = output.scrollHeight;
+        }
+      });
+      });
+  </script>
 </body>
 </html>

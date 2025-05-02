@@ -92,6 +92,24 @@
     opacity: 0.6;
     margin-bottom: 20px;
   }
+  #music-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 20px;
+    background: #ddd;
+    border: 1px solid #999;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  #music-toggle:hover {
+    background: #bbb;
+  }
+
 </style>
 
 </head>
@@ -111,10 +129,24 @@
   <source src="song.mp3" type="audio/mpeg">
   </audio>
 
+  <button id="music-toggle" title="Toggle music">🎵</button>
+
   <script>
-    document.body.addEventListener("click", () => {
-      const audio = document.getElementById("bgm");
-      audio.play();
+    const audio = document.getElementById("bgm");
+    const toggleBtn = document.getElementById("music-toggle");
+  
+    let isPlaying = false;
+  
+    toggleBtn.addEventListener("click", () => {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        toggleBtn.textContent = "🎵";
+      } else {
+        audio.play();
+        isPlaying = true;
+        toggleBtn.textContent = "⏸️";
+      }
     });
   </script>
 

@@ -202,7 +202,7 @@
       const name = nameInput.value.trim() || 'Anonymous';
       const message = messageInput.value.trim();
       if (message) {
-        await addDoc(collection(db, 'messages'), {
+        await addDoc(collection(db, 'message'), {
           name,
           message,
           timestamp: serverTimestamp()
@@ -211,7 +211,7 @@
       }
     });
 
-    const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+    const q = query(collection(db, 'message'), orderBy('timestamp', 'desc'));
     onSnapshot(q, (snapshot) => {
       messagesDiv.innerHTML = '';
       snapshot.forEach(doc => {

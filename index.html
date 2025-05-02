@@ -109,6 +109,38 @@
   #music-toggle:hover {
     background: #bbb;
   }
+#terminal {
+  background: #111;
+  color: #0f0;
+  padding: 20px;
+  font-family: monospace;
+  font-size: 14px;
+  margin-top: 60px;
+  border: 1px dashed #0f0;
+  border-radius: 5px;
+  max-width: 700px;
+}
+
+#terminal-output {
+  white-space: pre-wrap;
+  min-height: 150px;
+  margin-bottom: 10px;
+}
+
+#terminal-input {
+  display: flex;
+  align-items: center;
+}
+
+#terminal-input input {
+  background: transparent;
+  border: none;
+  color: #0f0;
+  font-family: monospace;
+  font-size: 14px;
+  outline: none;
+  flex: 1;
+}
 
 </style>
 
@@ -188,7 +220,42 @@
         document.body.classList.add("light");
       }
     });
+
+    const output = document.getElementById("terminal-output");
+    const input = document.getElementById("terminal-cmd");
+    
+    const commands = {
+      help: "Available commands:\n  dirac\n  math\n  about\n  clear",
+      dirac: "Paul Dirac: A silent symmetry in a chaotic world.",
+      math: "Math is a structured form of confusion we find comforting.",
+      about: "This is a digital notebook of thought fragments, made by Anna.",
+      clear: ""
+    };
+    
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const cmd = input.value.trim();
+        output.textContent += "\n> " + cmd;
+        if (commands.hasOwnProperty(cmd)) {
+          if (cmd === "clear") {
+            output.textContent = "";
+          } else {
+            output.textContent += "\n" + commands[cmd];
+          }
+        } else {
+          output.textContent += "\nUnknown command. Type 'help'.";
+        }
+        input.value = "";
+        output.scrollTop = output.scrollHeight;
+      }
+    });
   </script>
+<div id="terminal">
+  <pre id="terminal-output">Type 'help' to get started.</pre>
+  <div id="terminal-input">
+    <span>&gt; </span><input type="text" id="terminal-cmd" autofocus>
+  </div>
+</div>
 
 </body>
 </html>

@@ -91,49 +91,71 @@
     }
     #chatbox-container {
       position: fixed;
+      top: 50%;
       right: 20px;
-      bottom: 80px;
-      width: 300px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 10px;
+      transform: translateY(-50%);
+      width: 320px;
+      background: none; 
+      padding: 0;
+      border: none;
       z-index: 999;
+      font-family: "Courier New", monospace;
     }
-    body.night #guestbook input,
-    body.night #guestbook textarea {
-      background: #111;
+    
+    #guestbook {
+      background: rgba(0, 0, 0, 0.65); 
+      border: 1px dashed #888;
+      border-radius: 0;
+      padding: 16px;
+      box-shadow: 0 0 8px rgba(0, 255, 0, 0.2);
       color: #eee;
-      border-color: #444;
     }
-
-    #guestbook input, #guestbook textarea {
+    
+    body.night #guestbook {
+      background: rgba(20, 20, 20, 0.75);
+      border-color: #444;
+      color: #ccc;
+    }
+    
+    #guestbook input,
+    #guestbook textarea {
       width: 100%;
       margin-bottom: 10px;
-      padding: 8px;
-      background: #222;
-      color: #fff;
-      border: 1px solid #666;
-      border-radius: 4px;
+      padding: 6px;
+      background: #111;
+      color: #00ff99;
+      border: 1px dashed #444;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      border-radius: 0;
     }
+    
     #guestbook button {
-      padding: 8px 16px;
-      background: #00cc99;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    #guestbook button:hover {
-      background: #00aa77;
-    }
-    .message-entry {
-      border-top: 1px dashed #999;
-      margin-top: 10px;
-      padding-top: 10px;
+      padding: 6px 12px;
+      background: #00cc88;
+      color: #000;
+      border: 1px solid #00cc88;
       font-family: monospace;
-      white-space: pre-wrap;
+      font-weight: bold;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 0.2s ease;
     }
+    
+    #guestbook button:hover {
+      background: #00aa66;
+    }
+    
+    .message-entry {
+      border-top: 1px dashed #666;
+      margin-top: 10px;
+      padding-top: 8px;
+      font-family: monospace;
+      color: #aaffcc;
+      white-space: pre-wrap;
+      font-size: 13px;
+    }
+
   </style>
 </head>
 <body class="light">

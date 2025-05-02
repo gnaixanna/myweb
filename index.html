@@ -4,187 +4,116 @@
   <meta charset="UTF-8">
   <title>Anna's web</title>
   <style>
-  @keyframes drift {
-    0% {
-      background-position: 0 0, 0 0, 0 0;
+    @keyframes drift {
+      0% { background-position: 0 0, 0 0, 0 0; }
+      100% { background-position: 400px 300px, 300px 200px, 200px 500px; }
     }
-    100% {
-      background-position: 400px 300px, 300px 200px, 200px 500px;
+
+    body.light {
+      background-color: #f4f4f4;
+      background-image:
+        radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
+        radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
+      background-size: 20px 20px, 40px 40px, 70px 70px;
+      background-position: center, center, center;
+      animation: drift 30s linear infinite;
     }
-  }
 
-  body.light {
-    background-color: #f4f4f4;
-    background-image:
-      radial-gradient(circle, rgba(180, 200, 255, 0.25) 1px, transparent 1px),
-      radial-gradient(circle, rgba(255, 200, 200, 0.25) 1px, transparent 1px),
-      radial-gradient(circle, rgba(200, 255, 220, 0.25) 1px, transparent 1px);
-    background-size: 20px 20px, 40px 40px, 70px 70px;
-    background-position: center, center, center;
-    animation: drift 30s linear infinite;
-  }
+    body.night {
+      background-color: #0a0a1f;
+      background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+        radial-gradient(circle, rgba(200, 200, 255, 0.2) 1px, transparent 1px),
+        radial-gradient(circle, rgba(100, 255, 255, 0.15) 1px, transparent 1px);
+      background-size: 20px 20px, 40px 40px, 70px 70px;
+      background-position: center, center, center;
+      animation: drift 30s linear infinite;
+      color: #e5e5e5;
+    }
 
-  body.night {
-    background-color: #0a0a1f;
-    background-image:
-      radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-      radial-gradient(circle, rgba(200, 200, 255, 0.2) 1px, transparent 1px),
-      radial-gradient(circle, rgba(100, 255, 255, 0.15) 1px, transparent 1px);
-    background-size: 20px 20px, 40px 40px, 70px 70px;
-    background-position: center, center, center;
-    animation: drift 30s linear infinite;
-    color: #e5e5e5;
-  }
+    body.night h1 { color: #aaccff; }
+    body.night a { color: #88ffcc; }
+    body.night .box { border-color: #888; color: #ddd; }
+    body.night #typewriter { color: #bbb; }
+    body.night em, .night .toggle-hint, .night marquee { color: #999; }
 
-  body.night h1 {
-    color: #aaccff;
-  }
+    body {
+      font-family: "Courier New", monospace;
+      color: #222;
+      margin: 40px;
+      transition: background-color 1s ease, color 0.5s ease;
+    }
 
-  body.night a {
-    color: #88ffcc;
-  }
+    h1 { color: darkblue; }
+    a { color: darkgreen; text-decoration: none; }
+    .box { border: 1px dashed gray; padding: 20px; max-width: 600px; }
+    #typewriter { font-style: italic; color: #444; white-space: pre; }
+    .toggle-hint { font-size: 0.9em; opacity: 0.6; margin-bottom: 20px; }
 
-  body.night .box {
-    border-color: #888;
-    color: #ddd;
-  }
+    #music-toggle, #mode-toggle {
+      position: fixed;
+      bottom: 20px;
+      font-size: 20px;
+      background: #ddd;
+      border: 1px solid #999;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
 
-  body.night #typewriter {
-    color: #bbb;
-  }
+    #music-toggle { right: 20px; }
+    #mode-toggle { right: 80px; }
+    #music-toggle:hover, #mode-toggle:hover { background: #bbb; }
 
-  body.night em,
-  body.night .toggle-hint,
-  body.night marquee {
-    color: #999;
-  }
-
-  body {
-    font-family: "Courier New", monospace;
-    color: #222;
-    margin: 40px;
-    transition: background-color 1s ease, color 0.5s ease;
-  }
-
-  h1 {
-    color: darkblue;
-  }
-
-  a {
-    color: darkgreen;
-    text-decoration: none;
-  }
-
-  .box {
-    border: 1px dashed gray;
-    padding: 20px;
-    max-width: 600px;
-  }
-
-  #typewriter {
-    font-style: italic;
-    color: #444;
-    white-space: pre;
-  }
-
-  .toggle-hint {
-    font-size: 0.9em;
-    opacity: 0.6;
-    margin-bottom: 20px;
-  }
-  #music-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 20px;
-    background: #ddd;
-    border: 1px solid #999;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  #music-toggle:hover {
-    background: #bbb;
-  }
-#terminal {
-  background: #111;
-  color: #0f0;
-  padding: 20px;
-  font-family: monospace;
-  font-size: 14px;
-  margin-top: 60px;
-  border: 1px dashed #0f0;
-  border-radius: 5px;
-  max-width: 700px;
-}
-
-#terminal-output {
-  white-space: pre-wrap;
-  min-height: 150px;
-  margin-bottom: 10px;
-}
-
-#terminal-input {
-  display: flex;
-  align-items: center;
-}
-
-#terminal-input input {
-  background: transparent;
-  border: none;
-  color: #0f0;
-  font-family: monospace;
-  font-size: 14px;
-  outline: none;
-  flex: 1;
-}
-
-</style>
-
+    #terminal {
+      background: #111;
+      color: #0f0;
+      padding: 20px;
+      font-family: monospace;
+      font-size: 14px;
+      margin-top: 60px;
+      border: 1px dashed #0f0;
+      border-radius: 5px;
+      max-width: 700px;
+    }
+    #terminal-output {
+      white-space: pre-wrap;
+      min-height: 150px;
+      margin-bottom: 10px;
+    }
+    #terminal-input {
+      display: flex;
+      align-items: center;
+    }
+    #terminal-input input {
+      background: transparent;
+      border: none;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 14px;
+      outline: none;
+      flex: 1;
+    }
+  </style>
 </head>
-
-
 <body class="light">
 
   <p><em>// Welcome to the archive of myself and, astonishingly, it is still updating.</em></p>
-
   <marquee behavior="alternate">Hi but who are you?</marquee>
-
-  <p class="toggle-hint">(click anywhere to toggle day/night mode)</p>
-
+  <p class="toggle-hint">(toggle modes or music below)</p>
   <p><span id="typewriter"></span></p>
 
   <audio id="bgm" loop>
-  <source src="song.mp3" type="audio/mpeg">
+    <source src="song.mp3" type="audio/mpeg">
   </audio>
 
   <button id="music-toggle" title="Toggle music">🎵</button>
-
-  <script>
-    const audio = document.getElementById("bgm");
-    const toggleBtn = document.getElementById("music-toggle");
-  
-    let isPlaying = false;
-  
-    toggleBtn.addEventListener("click", () => {
-      if (isPlaying) {
-        audio.pause();
-        isPlaying = false;
-        toggleBtn.textContent = "🎵";
-      } else {
-        audio.play();
-        isPlaying = true;
-        toggleBtn.textContent = "⏸️";
-      }
-    });
-  </script>
-
+  <button id="mode-toggle" title="Toggle mode">🌙</button>
 
   <h1>This is my website.</h1>
-
   <div class="box">
     <p>I write about...</p>
     <ul>
@@ -195,12 +124,18 @@
     <p><a href="page2.html">Click here to continue...</a></p>
   </div>
 
-  <script>
+  <div id="terminal">
+    <pre id="terminal-output">Type 'help' to get started.</pre>
+    <div id="terminal-input">
+      <span>&gt; </span><input type="text" id="terminal-cmd" autofocus>
+    </div>
+  </div>
 
+  <script>
+    // typewriter
     const text = "> A huge welcome to you cause I have no idea who else will be here except myself.";
     let i = 0;
     const speed = 60;
-
     function typeWriter() {
       if (i < text.length) {
         document.getElementById("typewriter").textContent += text.charAt(i);
@@ -208,40 +143,47 @@
         setTimeout(typeWriter, speed);
       }
     }
-
     typeWriter();
 
-    document.body.addEventListener("click", () => {
-      if (document.body.classList.contains("light")) {
-        document.body.classList.remove("light");
-        document.body.classList.add("night");
+    // music toggle
+    const audio = document.getElementById("bgm");
+    const musicBtn = document.getElementById("music-toggle");
+    let isPlaying = false;
+    musicBtn.addEventListener("click", () => {
+      if (isPlaying) {
+        audio.pause();
+        musicBtn.textContent = "🎵";
       } else {
-        document.body.classList.remove("night");
-        document.body.classList.add("light");
+        audio.play();
+        musicBtn.textContent = "⏸️";
       }
+      isPlaying = !isPlaying;
     });
 
+    // mode toggle
+    const modeBtn = document.getElementById("mode-toggle");
+    modeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      document.body.classList.toggle("night");
+    });
+
+    // terminal
     const output = document.getElementById("terminal-output");
     const input = document.getElementById("terminal-cmd");
-    
     const commands = {
-      help: "Available commands:\n  dirac\n  math\n  about\n  clear",
-      dirac: "Paul Dirac: A silent symmetry in a chaotic world.",
-      math: "Math is a structured form of confusion we find comforting.",
-      about: "This is a digital notebook of thought fragments, made by Anna.",
+      help: "Available commands:\n  dirac\n  math\n  about\n  beauty\n  clear",
+      dirac: "Paul Dirac: 'Age is, of course, a fever chill/ That every physicist must fear./ He's better dead than living still/ When once he's past his thirtieth year'",
+      math: "The mathematician plays a game in which he himself invents the rules while the physicist plays a game in which the rules are provided by nature, but as time goes on it becomes increasingly evident that the rules which the mathematician finds interesting are the same as those which nature has chosen.",
+      beauty:"Any artificial sense of beauty must start from nature itself. There is a law in nature, and the reason why this universal law can describe beauty is because it is similar to the divine order of a certain creative process. The refinement of this divine order has brought about all things in the world, and therefore all things must contain a certain inner harmonious beauty. This shows that the beauty in the equation should also obey the same laws of beauty as nature. Therefore, since our work is to describe nature through equations, it is obvious that the results of our work, if correct, should be beautiful. If a person cannot understand or feel nature, he cannot understand beauty and can only wander in disharmony."
+      about: "This is a digital archive of thought fragments.",
       clear: ""
     };
-    
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         const cmd = input.value.trim();
         output.textContent += "\n> " + cmd;
         if (commands.hasOwnProperty(cmd)) {
-          if (cmd === "clear") {
-            output.textContent = "";
-          } else {
-            output.textContent += "\n" + commands[cmd];
-          }
+          output.textContent += "\n" + commands[cmd];
         } else {
           output.textContent += "\nUnknown command. Type 'help'.";
         }
@@ -250,12 +192,6 @@
       }
     });
   </script>
-<div id="terminal">
-  <pre id="terminal-output">Type 'help' to get started.</pre>
-  <div id="terminal-input">
-    <span>&gt; </span><input type="text" id="terminal-cmd" autofocus>
-  </div>
-</div>
 
 </body>
 </html>

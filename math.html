@@ -104,6 +104,10 @@
     margin-bottom: 10px;
   }
 </style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 
 </head>
 
@@ -148,6 +152,54 @@
     <a href="thoughts.html">Thoughts</a>
   </nav>
   <p>This page will be about Math. Maybe a little bit messy.</p>
+  <h2>The Fountain</h2>
+  <p>
+  The probability density of the fountain landing point with a uniform distribution of water spray angles in the interval [0, π/2] is given by:
+  </p>
+  
+  <p>
+  $$ R = R_{\max} \cdot \sin(2\theta) $$
+  </p>
+  
+  <p>
+  And the density function is:
+  </p>
+  
+  <p>
+  $$ f_R(R) = \frac{1}{\pi R_{\max}} \cdot \frac{1}{\sqrt{1 - \left( \frac{R}{R_{\max}} \right)^2}} $$
+  </p>
+
+  <h2>Linear Area on the Sphere</h2>
+
+  <p>
+  No matter whether you go from the narrow top to the wide middle or from the wide middle to the narrow bottom of a sphere, forming a hemisphere in either case, the surface area remains the same: 
+  </p>
+  
+  <p>
+  $$ A = 2\pi r^2 $$
+  </p>
+  
+  <p>
+  Seems a bit counterintuitive. It turns out the surface area of a spherical cap is:
+  </p>
+  
+  <p>
+  $$ A(h) = 2\pi R h $$
+  </p>
+  
+  <p>
+  This means that the spherical cap area increases linearly with height \( h \). If we divide a full sphere (height from 0 to \( 2R \)) evenly into \( n \) horizontal slices, each with height \( \Delta h \), then the increase in surface area from height \( h \) to \( h + \Delta h \) is the same for all layers.
+  </p>
+  
+  <p>
+  That is, every spherical zone has the same surface area when the vertical height is divided equally.
+  </p>
+  
+  <p>
+  It's counterintuitive! The top is steep and short, the middle part is flat and long, but they balance out perfectly. Equal areas, no matter how many slices.
+  </p>
+  
+
 </body>
 </html>
 

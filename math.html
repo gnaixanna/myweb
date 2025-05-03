@@ -154,20 +154,78 @@
   <p>This page will be about Math. Maybe a little bit messy.</p>
   <h2>The Fountain</h2>
   <p>
-  The probability density of the fountain landing point with a uniform distribution of water spray angles in the interval [0, π/2] is given by:
+  Consider a fountain that sprays water with a fixed initial speed \( v \), at an angle \( \theta \) that is uniformly distributed in the interval \( [0, \frac{\pi}{2}] \).
   </p>
   
   <p>
-  $$ R = R_{\max} \cdot \sin(2\theta) $$
+  The horizontal landing distance \( R \) of a droplet, as a function of angle \( \theta \), is given by:
   </p>
   
   <p>
-  And the density function is:
+  $$ R = \frac{v^2}{g} \sin(2\theta) $$
   </p>
   
   <p>
-  $$ f_R(R) = \frac{1}{\pi R_{\max}} \cdot \frac{1}{\sqrt{1 - \left( \frac{R}{R_{\max}} \right)^2}} $$
+  This function reaches its maximum when \( \theta = \frac{\pi}{4} \), which corresponds to the furthest possible landing distance (which is quite irrelevant here):
   </p>
+  
+  <p>
+  $$ R_{\text{max}} = \frac{v^2}{g} $$
+  </p>
+  
+  <p>
+  We solve for \( \theta \) in terms of \( R \) by the inverse function:
+  </p>
+  
+  <p>
+  $$
+  \theta = \frac{1}{2} \arcsin\left( \frac{R}{R_{\text{max}}} \right)
+  $$
+  </p>
+  
+  <p>
+  We apply the change of variables in probability density:
+  </p>
+  
+  <p>
+  $$
+  f_R(R) \cdot dR = f_\theta(\theta) \cdot d\theta
+  f_R(R) = f_\theta(\theta) \cdot \left| \frac{d\theta}{dR} \right|
+  $$
+  </p>
+  
+  <p>
+  We compute the derivative $$\frac{d\theta}{dR}$$ by the chain rule:
+  </p>
+  
+  <p>
+  $$
+  \frac{d\theta}{dR} = \frac{1}{2 R_{\text{max}} \sqrt{1 - \left( \frac{R}{R_{\text{max}}} \right)^2}}
+  $$
+  </p>
+  
+  <p>
+  Substituting into the formula:
+  </p>
+  
+  <p>
+  $$
+  f_R(R) = \frac{2}{\pi} \cdot \frac{1}{2 R_{\text{max}} \sqrt{1 - \left( \frac{R}{R_{\text{max}}} \right)^2}} 
+  = \frac{1}{\pi R_{\text{max}} \sqrt{1 - \left( \frac{R}{R_{\text{max}}} \right)^2}}
+  $$
+  </p>
+
+  <p>
+  $$f_R(R)$$ is directly proportional to $$\frac{1}{\sqrt{1 - \left( \frac{R}{R_{\max}} \right)^2}}$$
+  </p>
+  <p>
+  As \( R \to R_{\text{max}} \), the denominator tends to zero. This explains why droplets accumulate most densely at the farthest point.
+  </p>
+  
+  <p><em>
+  This is beautiful.
+  </em></p>
+  
 
   <h2>Linear Area on the Sphere</h2>
 

@@ -183,15 +183,19 @@
       animation: flicker 1.2s infinite;
     }
     #spectral-window {
-      position: relative;
+      position: fixed;
+      top: 50%;
+      right: 80px;
+      transform: translateY(-50%);
       width: 500px;
       height: 250px;
-      margin-top: 40px;
       border: 1px dashed #666;
       background-color: rgba(0, 0, 0, 0.4);
       box-shadow: 0 0 8px rgba(255,255,255,0.1);
       overflow: hidden;
+      z-index: 10;
     }
+
     
     #spectral-canvas {
       width: 100%;

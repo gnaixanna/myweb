@@ -206,6 +206,8 @@
      
 
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
+
 </head>
 <body class="light">
   <p><em>// Welcome to the archive of myself and, astonishingly, it is still updating.</em></p>
@@ -237,9 +239,7 @@
       <span>&gt; </span><input type="text" id="terminal-cmd" autofocus>
     </div>
   </div>
-  <div id="spectral-window">
-    <canvas id="spectral-canvas"></canvas>
-  </div>
+  <div id="spectral-window"></div>
 
   <!-- notepad -->
   <div id="chatbox-container">
@@ -395,78 +395,83 @@
           input.value = "";
           output.scrollTop = output.scrollHeight;
         }
+      
       });
       });
-      // Spectral Window
-     const canvas = document.getElementById('spectral-canvas');
-        if (canvas) {
-        const ctx = canvas.getContext('2d');
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+      // SPECTRAL WINDOW PIXI PARTICLES
+      const app = new PIXI.Application({
+        width: 500,
+        height: 250,
+        backgroundAlpha: 0,
+        antialias: true
+      });
+      document.getElementById("spectral-window").appendChild(app.view);
       
-        const particles = [];
-        const particleCount = 30000; 
+      const particleCount = 20000;
+      const particles = [];
+      const container = new PIXI.ParticleContainer(particleCount, {
+        scale: true,
+        position: true,
+        alpha: true
+      });
+      app.stage.addChild(container);
       
-        for (let i = 0; i < particleCount; i++) {
-          particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.2,
-            vy: (Math.random() - 0.5) * 0.2,
-            r: Math.random() * 0.6 + 0.3 
-          });
-        }
+      for (let i = 0; i < particleCount; i++) {
+        const g = new PIXI.Graphics();
+        g.beginFill(0x000000, 0.03); 
+        g.drawCircle(0, 0, Math.random() * 0.8 + 0.3);
+        g.endFill();
       
-        let mouse = { x: null, y: null };
-        canvas.addEventListener('mousemove', e => {
-          const rect = canvas.getBoundingClientRect();
-          mouse.x = e.clientX - rect.left;
-          mouse.y = e.clientY - rect.top;
-        });
-        canvas.addEventListener('mouseleave', () => {
-          mouse.x = null;
-          mouse.y = null;
-        });
+        const texture = app.renderer.generateTexture(g);
+        const sprite = new PIXI.Sprite(texture);
       
-        function drawParticles() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          for (let p of particles) {
-            
-            if (mouse.x !== null && mouse.y !== null) {
-              const dx = p.x - mouse.x;
-              const dy = p.y - mouse.y;
-              const dist = Math.sqrt(dx*dx + dy*dy);
-              if (dist < 50) {
-                const angle = Math.atan2(dy, dx);
-                const force = (50 - dist) / 50;
-                p.vx += Math.cos(angle) * force * 0.3;
-                p.vy += Math.sin(angle) * force * 0.3;
-              }
-            }
-      
-            
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vx *= 0.95;
-            p.vy *= 0.95;
-      
-            
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      
-            
-            ctx.beginPath();
-            ctx.fillStyle = "rgba(0, 0, 0, 0.06)";
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fill();
-          }
-      
-          requestAnimationFrame(drawParticles);
-        }
-      
-        drawParticles();
+        sprite.x = Math.random() * app.screen.width;
+        sprite.y = Math.random() * app.screen.height;
+        sprite.vx = (Math.random() - 0.5) * 0.5;
+        sprite.vy = (Math.random() - 0.5) * 0.5;
+        sprite.alpha = 1;
+        container.addChild(sprite);
+        particles.push(sprite);
       }
+      
+      let mouse = { x: null, y: null };
+      app.view.addEventListener("mousemove", (e) => {
+        const rect = app.view.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+      app.view.addEventListener("mouseleave", () => {
+        mouse.x = null;
+        mouse.y = null;
+      });
+      
+      app.ticker.add(() => {
+        for (let p of particles) {
+          if (mouse.x !== null && mouse.y !== null) {
+            const dx = p.x - mouse.x;
+            const dy = p.y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 40) {
+              const angle = Math.atan2(dy, dx);
+              const force = (40 - dist) / 40;
+              p.vx += Math.cos(angle) * force * 0.6;
+              p.vy += Math.sin(angle) * force * 0.6;
+            }
+          }
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.95;
+          p.vy *= 0.95;
+      
+          // wrap around
+          if (p.x < 0) p.x = app.screen.width;
+          if (p.x > app.screen.width) p.x = 0;
+          if (p.y < 0) p.y = app.screen.height;
+          if (p.y > app.screen.height) p.y = 0;
+        }
+      });
 
+      
   </script>
   
 

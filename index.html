@@ -357,15 +357,7 @@
         isPlaying = !isPlaying;
       });
 
-      // mode toggle
-      modeBtn.addEventListener("click", () => {
-        document.body.classList.toggle("light");
-        document.body.classList.toggle("night");
-        const newColor = document.body.classList.contains("night") ? 0xffffff : 0x000000;
-        for (let p of particles) {
-          p.tint = newColor;
-        }
-      });
+      
       //reset model
       const resetBtn = document.getElementById("reset-particles");
       resetBtn.addEventListener("click", () => {
@@ -435,7 +427,7 @@
       });
       document.getElementById("spectral-window").appendChild(app.view);
       
-      const particleCount = 20000;
+      const particleCount = 50000;
       const particles = [];
       const container = new PIXI.ParticleContainer(particleCount, {
         scale: true,
@@ -462,6 +454,15 @@
         container.addChild(sprite);
         particles.push(sprite);
       }
+      // mode toggle
+      modeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        document.body.classList.toggle("night");
+        const newColor = document.body.classList.contains("night") ? 0xffffff : 0x000000;
+        for (let p of particles) {
+          p.tint = newColor;
+        }
+      });
       
       let mouse = { x: null, y: null };
       app.view.addEventListener("mousemove", (e) => {

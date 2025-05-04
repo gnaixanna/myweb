@@ -182,11 +182,15 @@
       z-index: 10;
       animation: flicker 1.2s infinite;
     }
+    #content-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    
     #spectral-window {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(20%);
       width: 400px;
       height: 200px;
       border: 1px dashed #666;
@@ -194,6 +198,7 @@
       box-shadow: 0 0 8px rgba(255,255,255,0.1);
       overflow: hidden;
     }
+
 
 
     
@@ -265,8 +270,10 @@
   <div id="spectral-window"></div>
 
   <!-- notepad -->
-  <div id="chatbox-container">
-    <div id="guestbook">
+  <div id="content-row">
+    <div id="spectral-window"></div>
+    <div id="chatbox-container">
+      <div id="guestbook">
       <h3>Guestbook</h3>
       <form id="message-form">
         <input type="text" id="name" placeholder="Your name (optional)">
@@ -276,6 +283,7 @@
       <div id="messages"></div>
     </div>
   </div>
+
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";

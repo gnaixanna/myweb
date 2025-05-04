@@ -198,6 +198,23 @@
       height: 100%;
       display: block;
     }
+    #reset-particles {
+      position: fixed;
+      bottom: 20px;
+      right: 140px;
+      font-size: 20px;
+      background: #ddd;
+      border: 1px solid #999;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #reset-particles:hover {
+      background: #bbb;
+    }
+
 
     @keyframes flicker {
         0%, 100% { opacity: 0.1; }
@@ -223,6 +240,8 @@
 
   <button id="music-toggle" title="Toggle music">🎵</button>
   <button id="mode-toggle" title="Toggle mode">🌙</button>
+  <button id="reset-particles" title="Reset particles">🔁</button>
+
   <h1>This is my website.</h1>
   <div class="box">
     <p>I write about...</p>
@@ -342,6 +361,15 @@
       modeBtn.addEventListener("click", () => {
         document.body.classList.toggle("light");
         document.body.classList.toggle("night");
+        const newColor = document.body.classList.contains("night") ? 0xffffff : 0x000000;
+        for (let p of particles) {
+          p.tint = newColor;
+        }
+      });
+      //reset model
+      const resetBtn = document.getElementById("reset-particles");
+      resetBtn.addEventListener("click", () => {
+        resetParticles();
       });
 
       // terminal
@@ -430,6 +458,7 @@
         sprite.vx = (Math.random() - 0.5) * 0.5;
         sprite.vy = (Math.random() - 0.5) * 0.5;
         sprite.alpha = 1;
+        sprite.tint = 0x000000;
         container.addChild(sprite);
         particles.push(sprite);
       }
@@ -469,7 +498,18 @@
           if (p.y < 0) p.y = app.screen.height;
           if (p.y > app.screen.height) p.y = 0;
         }
+
       });
+      function resetParticles() {
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x = Math.random() * app.screen.width;
+          p.y = Math.random() * app.screen.height;
+          p.vx = (Math.random() - 0.5) * 0.5;
+          p.vy = (Math.random() - 0.5) * 0.5;
+          p.tint = document.body.classList.contains("night") ? 0xffffff : 0x000000;
+        }
+      }
 
       
   </script>

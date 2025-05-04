@@ -184,9 +184,38 @@
     }
     
     @keyframes flicker {
-      0%, 100% { opacity: 0.1; }
-      50% { opacity: 0.25; }
-    }
+        0%, 100% { opacity: 0.1; }
+        50% { opacity: 0.25; }
+      }
+      #spectral-window {
+    position: relative;
+    width: 400px;
+    height: 250px;
+    border: 1px dashed #00ff00;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 8px #00ff00;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  
+  #spectral-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #spectral-text {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: #00ff00;
+    font-family: monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    z-index: 10;
+    text-shadow: 0 0 4px #00ff00;
+  }
 
 
   </style>
@@ -221,6 +250,11 @@
       <span>&gt; </span><input type="text" id="terminal-cmd" autofocus>
     </div>
   </div>
+  <div id="spectral-window">
+    <canvas id="spectral-canvas"></canvas>
+    <div id="spectral-text"></div>
+  </div>
+
   <!-- notepad -->
   <div id="chatbox-container">
     <div id="guestbook">
@@ -378,5 +412,35 @@
       });
       });
   </script>
+  <script>
+  const canvas = document.getElementById('spectral-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  
+  let particles = [];
+  
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    particles.push({ x, y, alpha: 1.0 });
+  });
+  
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(0, 255, 0, ${p.alpha})`;
+      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      ctx.fill();
+      p.alpha -= 0.02;
+    });
+    particles = particles.filter(p => p.alpha > 0);
+    requestAnimationFrame(draw);
+  }
+  draw();
+  </script>
+
 </body>
 </html>

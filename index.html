@@ -89,11 +89,11 @@
       outline: none;
       flex: 1;
     }
-    #chatbox-container {
+   #chatbox-container {
       position: fixed;
       top: 50%;
-      left: 60%;
-      transform: translate(-50%, -50%);
+      right: 20px;
+      transform: translateY(-50%);
       width: 320px;
       background: none; 
       padding: 0;
@@ -101,6 +101,7 @@
       z-index: 999;
       font-family: "Courier New", monospace;
     }
+
 
     
     #guestbook {
@@ -184,12 +185,14 @@
       animation: flicker 1.2s infinite;
     }
     #content-row {
+      position: relative;
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
       align-items: flex-start;
-      gap: 20px;
+      gap: 40px;
       margin-top: 40px;
     }
+
     
     #spectral-window {
       width: 400px;
@@ -200,6 +203,9 @@
       overflow: hidden;
     }
 
+    #spectral-window {
+      margin-left: 80px; 
+    }
 
 
     

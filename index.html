@@ -337,12 +337,15 @@
     typeWriter();
 
     // DOM ready
+    const modeBtn = document.getElementById("mode-toggle");
+    const resetBtn = document.getElementById("reset-particles");
+    
     window.addEventListener('DOMContentLoaded', () => {
       const audio = document.getElementById("bgm");
       const musicBtn = document.getElementById("music-toggle");
-      const modeBtn = document.getElementById("mode-toggle");
       const output = document.getElementById("terminal-output");
       const input = document.getElementById("terminal-cmd");
+
 
       // music toggle
       let isPlaying = false;
@@ -427,7 +430,7 @@
       });
       document.getElementById("spectral-window").appendChild(app.view);
       
-      const particleCount = 50000;
+      const particleCount = 10000;
       const particles = [];
       const container = new PIXI.ParticleContainer(particleCount, {
         scale: true,

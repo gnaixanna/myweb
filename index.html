@@ -163,6 +163,28 @@
       position: relative;
       overflow: hidden;
     }
+    #messages {
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-top: 12px;
+      padding-right: 6px;
+    }
+    #messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    #messages::-webkit-scrollbar-track {
+      background: #111;
+    }
+    
+    #messages::-webkit-scrollbar-thumb {
+      background: #00aa66;
+    }
+    
+    #messages::-webkit-scrollbar-thumb:hover {
+      background: #00ff99;
+    }
     #guestbook h3 {
       color: #00ff00;
       text-shadow: 0 0 6px #00ff00;

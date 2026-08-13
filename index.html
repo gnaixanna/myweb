@@ -185,6 +185,91 @@
     #messages::-webkit-scrollbar-thumb:hover {
       background: #00ff99;
     }
+    /* MAIN MESSAGE */
+
+    .message-text {
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+    
+    
+    /* REPLY BUTTON */
+    
+    .reply-toggle {
+      display: block;
+    
+      margin-top: 6px;
+      padding: 2px 0 !important;
+    
+      background: transparent !important;
+      border: none !important;
+    
+      color: #00cc88 !important;
+    
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      font-weight: normal !important;
+    
+      cursor: pointer;
+    }
+    
+    .reply-toggle:hover {
+      color: #00ff99 !important;
+      background: transparent !important;
+    }
+    
+    
+    /* COLLAPSIBLE THREAD */
+    
+    .reply-panel {
+      margin-top: 7px;
+      margin-left: 10px;
+    
+      padding-left: 10px;
+    
+      border-left: 1px dashed #447766;
+    }
+    
+    .reply-panel[hidden] {
+      display: none;
+    }
+    
+    
+    /* INDIVIDUAL REPLY */
+    
+    .reply-entry {
+      padding: 6px 0;
+    
+      font-size: 12px;
+      color: #88ddaa;
+    
+      border-bottom: 1px dotted #33443d;
+    }
+    
+    .reply-entry:last-of-type {
+      border-bottom: none;
+    }
+    
+    .reply-arrow {
+      color: #00cc88;
+    }
+    
+    .reply-text {
+      margin-top: 3px;
+      margin-left: 14px;
+    
+      line-height: 1.4;
+    }
+    
+    
+    /* REPLY FORM */
+    
+    .reply-form {
+      margin-top: 9px;
+      padding-top: 8px;
+    
+      border-top: 1px dashed #335544;
+    }
     #guestbook h3 {
       color: #00ff00;
       text-shadow: 0 0 6px #00ff00;
@@ -213,6 +298,26 @@
       align-items: flex-start;
       gap: 40px;
       margin-top: 40px;
+    }
+    #guestbook .reply-form input,
+    #guestbook .reply-form textarea {
+      box-sizing: border-box;
+    
+      padding: 4px;
+      margin-bottom: 5px;
+    
+      font-size: 11px;
+    }
+    
+    #guestbook .reply-form textarea {
+      min-height: 45px;
+      resize: vertical;
+    }
+    
+    #guestbook .reply-form button {
+      padding: 3px 8px;
+    
+      font-size: 11px;
     }
 
     
@@ -343,24 +448,228 @@
         await addDoc(collection(db, 'message'), {
           name,
           message,
+          parentId: null,
           timestamp: serverTimestamp()
         });
         messageInput.value = '';
       }
     });
 
-    const q = query(collection(db, 'message'), orderBy('timestamp', 'desc'));
+    const expandedThreads = new Set();
+    let currentMessages = [];
+    
+    const q = query(
+      collection(db, 'message'),
+      orderBy('timestamp', 'desc')
+    );
+    
     onSnapshot(q, (snapshot) => {
-      messagesDiv.innerHTML = '';
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const div = document.createElement('div');
-        const time = data.timestamp?.toDate().toLocaleString() || 'just now';
-        div.className = 'message-entry';
-        div.innerHTML = `<strong>${data.name}</strong> <em>${time}</em><br>${data.message}`;
-        messagesDiv.appendChild(div);
-      });
+    
+      currentMessages = snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }));
+    
+      renderMessages();
     });
+    
+    
+    function renderMessages() {
+    
+      const oldScroll = messagesDiv.scrollTop;
+    
+      messagesDiv.innerHTML = '';
+    
+      // 没有 parentId = 主留言
+      const roots = currentMessages.filter(message => !message.parentId);
+    
+      // 把 replies 按照 parentId 分类
+      const repliesByParent = new Map();
+    
+      currentMessages
+        .filter(message => message.parentId)
+        .forEach(reply => {
+    
+          if (!repliesByParent.has(reply.parentId)) {
+            repliesByParent.set(reply.parentId, []);
+          }
+    
+          repliesByParent.get(reply.parentId).push(reply);
+        });
+    
+    
+      roots.forEach(message => {
+    
+        const replies = repliesByParent.get(message.id) || [];
+    
+        const entry = document.createElement('div');
+        entry.className = 'message-entry';
+    
+    
+        // ---------- HEADER ----------
+    
+        const header = document.createElement('div');
+        header.className = 'message-header';
+    
+        const name = document.createElement('strong');
+        name.textContent = message.name || 'Anonymous';
+    
+        const time = document.createElement('em');
+        time.textContent =
+          message.timestamp?.toDate().toLocaleString() || 'just now';
+    
+        header.appendChild(name);
+        header.appendChild(document.createTextNode(' '));
+        header.appendChild(time);
+    
+    
+        // ---------- MESSAGE ----------
+    
+        const body = document.createElement('div');
+        body.className = 'message-text';
+        body.textContent = message.message;
+    
+    
+        entry.appendChild(header);
+        entry.appendChild(body);
+    
+    
+        // ---------- REPLY TOGGLE ----------
+    
+        const toggle = document.createElement('button');
+        toggle.className = 'reply-toggle';
+    
+        const isExpanded = expandedThreads.has(message.id);
+    
+        if (replies.length === 0) {
+          toggle.textContent = isExpanded
+            ? '[-] reply'
+            : '[+] reply';
+        } else {
+          toggle.textContent = isExpanded
+            ? `[-] replies (${replies.length})`
+            : `[+] replies (${replies.length})`;
+        }
+    
+        entry.appendChild(toggle);
+    
+    
+        // ---------- REPLY PANEL ----------
+    
+        const panel = document.createElement('div');
+        panel.className = 'reply-panel';
+    
+        if (!isExpanded) {
+          panel.hidden = true;
+        }
+    
+    
+        // replies 最旧 → 最新
+        [...replies].reverse().forEach(reply => {
+    
+          const replyEntry = document.createElement('div');
+          replyEntry.className = 'reply-entry';
+    
+          const replyHeader = document.createElement('div');
+    
+          const arrow = document.createElement('span');
+          arrow.className = 'reply-arrow';
+          arrow.textContent = '↳ ';
+    
+          const replyName = document.createElement('strong');
+          replyName.textContent = reply.name || 'Anonymous';
+    
+          const replyTime = document.createElement('em');
+          replyTime.textContent =
+            reply.timestamp?.toDate().toLocaleString() || 'just now';
+    
+          replyHeader.appendChild(arrow);
+          replyHeader.appendChild(replyName);
+          replyHeader.appendChild(document.createTextNode(' '));
+          replyHeader.appendChild(replyTime);
+    
+          const replyBody = document.createElement('div');
+          replyBody.className = 'reply-text';
+          replyBody.textContent = reply.message;
+    
+          replyEntry.appendChild(replyHeader);
+          replyEntry.appendChild(replyBody);
+    
+          panel.appendChild(replyEntry);
+        });
+    
+    
+        // ---------- REPLY FORM ----------
+    
+        const replyForm = document.createElement('form');
+        replyForm.className = 'reply-form';
+    
+        const replyNameInput = document.createElement('input');
+        replyNameInput.type = 'text';
+        replyNameInput.placeholder = 'Your name (optional)';
+    
+        const replyMessageInput = document.createElement('textarea');
+        replyMessageInput.placeholder = 'Write a reply...';
+        replyMessageInput.required = true;
+    
+        const replyButton = document.createElement('button');
+        replyButton.type = 'submit';
+        replyButton.textContent = 'Reply';
+    
+        replyForm.appendChild(replyNameInput);
+        replyForm.appendChild(replyMessageInput);
+        replyForm.appendChild(replyButton);
+    
+        panel.appendChild(replyForm);
+    
+        entry.appendChild(panel);
+    
+    
+        // ---------- OPEN / CLOSE ----------
+    
+        toggle.addEventListener('click', () => {
+    
+          if (expandedThreads.has(message.id)) {
+            expandedThreads.delete(message.id);
+          } else {
+            expandedThreads.add(message.id);
+          }
+    
+          renderMessages();
+        });
+    
+    
+        // ---------- SEND REPLY ----------
+    
+        replyForm.addEventListener('submit', async (e) => {
+    
+          e.preventDefault();
+    
+          const replyName =
+            replyNameInput.value.trim() || 'Anonymous';
+    
+          const replyMessage =
+            replyMessageInput.value.trim();
+    
+          if (!replyMessage) return;
+    
+          await addDoc(collection(db, 'message'), {
+            name: replyName,
+            message: replyMessage,
+            parentId: message.id,
+            timestamp: serverTimestamp()
+          });
+    
+        });
+    
+    
+        messagesDiv.appendChild(entry);
+      });
+    
+    
+      messagesDiv.scrollTop = oldScroll;
+    }
+    
   </script>
   <script>
     // typewriter

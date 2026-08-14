@@ -337,7 +337,14 @@
     }
     
     #spectral-handle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 20px;
+    
+      z-index: 10;
+    
       line-height: 20px;
       padding-left: 6px;
     
@@ -346,13 +353,13 @@
     
       font-size: 11px;
       color: #aaa;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
       border-bottom: 1px dashed #666;
     }
     
     #spectral-canvas {
       width: 100%;
-      height: calc(100% - 21px);
+      height: 100%;
       display: block;
     }
     #reset-particles {

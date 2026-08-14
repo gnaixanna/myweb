@@ -182,7 +182,7 @@
     // =====================================================
 
     const READER_EMAIL = "realannaxiang@gmail.com";
-
+    const READER_UID = "prXnYBUwTwbjHCTTJWLrWHWq6YC2";
 
     // =====================================================
     // FIREBASE SETUP
@@ -351,27 +351,26 @@
     onAuthStateChanged(
       auth,
       async (user) => {
-
-        if (user) {
-
+    
+        if (user && user.uid === READER_UID) {
+    
           loginView.hidden = true;
-
           articleView.hidden = false;
-
+    
           await loadArticle();
-
-        }
-
-        else {
-
+    
+        } else {
+    
+          if (user) {
+            await signOut(auth);
+          }
+    
           articleView.hidden = true;
-
           loginView.hidden = false;
-
           articleContent.textContent = "";
-
+    
         }
-
+    
       }
     );
 

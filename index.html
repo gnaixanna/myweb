@@ -799,13 +799,15 @@
       });
       });
       // SPECTRAL WINDOW PIXI PARTICLES
+      const canvas = document.getElementById("spectral-canvas");
+
       const app = new PIXI.Application({
+        view: canvas,
         width: 500,
         height: 250,
         backgroundAlpha: 0,
         antialias: true
       });
-      document.getElementById("spectral-window").appendChild(app.view);
       
       const particleCount = 20000;
       const particles = [];
@@ -919,7 +921,7 @@
         spectral.style.bottom = "auto";
       });
       
-      handle.addEventListener("pointerup", () => {
+      handle.addEventListener("pointerup", (e) => {
         dragging = false;
         handle.releasePointerCapture(e.pointerId);
       });

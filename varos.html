@@ -2,7 +2,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Városliget</title>
+
   <style>
     body {
       background-color: #fdfdfd;
@@ -10,46 +13,389 @@
       padding: 40px;
       color: #222;
     }
+
     h1 {
       color: darkblue;
     }
+
     nav a {
       color: darkgreen;
       text-decoration: none;
       font-weight: bold;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
-    .photo {
-      border: 1px dashed #888;
-      padding: 20px;
-      margin-bottom: 40px;
-      max-width: 600px;
+
+    #loginView {
+      max-width: 400px;
+      margin-top: 60px;
     }
-    .photo img {
-      max-width: 100%;
-      display: block;
-      margin: 10px 0;
+
+    #password {
+      font-family: inherit;
+      font-size: 16px;
+      padding: 8px;
+      width: 250px;
+      max-width: 90%;
+      box-sizing: border-box;
     }
-    .caption {
-      color: #555;
-      font-size: 90%;
+
+    button {
+      font-family: inherit;
+      padding: 8px 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #errorMessage {
+      color: darkred;
+      margin-top: 15px;
+    }
+
+    #articleContent {
+      white-space: pre-wrap;
+      line-height: 1.5;
+      margin-top: 30px;
+      max-width: 900px;
+    }
+
+    #logoutBtn {
+      margin-top: 40px;
+    }
+
+    [hidden] {
+      display: none !important;
     }
   </style>
 </head>
+
 <body>
-<h1>Városliget</h1>
-  <nav>
-    <a href="thoughts.html">← Back to my thoughts</a>
-  </nav>
+
+  <!-- ===================== -->
+  <!-- LOGIN SCREEN          -->
+  <!-- ===================== -->
+
+  <div id="loginView">
+
+    <h1>Városliget</h1>
+
+    <nav>
+      <a href="thoughts.html">← Back to my thoughts</a>
+    </nav>
+
+    <p>This page is private.</p>
+
+    <form id="loginForm">
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required
+      >
+
+      <br>
+
+      <button id="loginBtn" type="submit">
+        Enter
+      </button>
+
+    </form>
+
+    <p id="errorMessage"></p>
+
+  </div>
 
 
-<p>It was written because of someone, but it is not written for someone.</p>
-  
-<p>Now you may recall how the eccentric, dazzling twigs beyond the reflective incline that we were sitting on drew me, along with our strands of hair, as the breeze came after us. I could not, and still cannot, name the breed of those pine trees standing in, with random positions assigned, the shadow of those twigs. They were lower than the ones you usually see and had a lighter yellowish colour, as if they had been growing while parched. Or it could be the misinterpretation of premature ordinary pine trees and the sunlight. You might very well tell me that they are just pine trees, and perhaps you are not bothered to ask me why I am bothered by their breed. Or maybe you are not of that kind. My arms were circling my curled legs with my chest hanging - with an intimate distance - above my thighs, and I did not, or perhaps it was that I forgot to ask you about the pine trees. You lay down when I sat there with the same position, and with your hands facing down towards the grass. If I had turned my face to the right, I would have seen an arrow, represented by you, pointing upward (the incline continued). I still believe that I would have enjoyed the day without you the same way I did; and the only difference it made was that it made me wonder if you would have enjoyed the day the same way if you were without me. Accepting the more likely answer, that you would, would not be an obstacle for me, for that is the reason for me that you came with some specialty. Though I am not sure if you are aware of that- it is possible that if it was about someone else, your day would have been different with them or without them - this is only my version of yourself. For this reason, I think, words can never depict an equal relationship, for they are only written by one. Now I remember that I was looking at you; you lay down with your glasses on, although you closed your eyes. You were with those lenses not because you wanted to see the ciel better (there was nothing to see upon there with your bare eyes, if you have lost the ability to judge the depth, it is no different from a blue back panel of the toy box placed right in front of your eyes,) but because you had to protect the lenses so you would not crash them on the grass. How counterintuitive your relation with a tool was in my thought.</p>
-<p>I seldom use the word "eternity" and am disgusted by the fact that it has been overused. Still, I hoped that the incline could continue till eternity. ( I have already used the word "eternity" here, so I will not use it again if someday I recall the swings we went on.)</p>
-<p>If one chooses April to be their favourite month for this reason, does that make them superficial?</p>
-<p>I will never (frankly, I might have used the idea of eternity again here) call you a first love of mine. Not because I struggle to differentiate friendship from love, but because I will not find a name for our afternoon at Városliget.</p>
+  <!-- ===================== -->
+  <!-- PRIVATE ARTICLE       -->
+  <!-- ===================== -->
+
+  <div id="articleView" hidden>
+
+    <h1 id="articleTitle">Városliget</h1>
+
+    <nav>
+      <a href="thoughts.html">← Back to my thoughts</a>
+    </nav>
+
+    <div id="articleContent"></div>
+
+    <button id="logoutBtn">
+      Logout
+    </button>
+
+  </div>
+
+
+  <!-- ===================== -->
+  <!-- FIREBASE              -->
+  <!-- ===================== -->
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      setPersistence,
+      browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+
+    // =====================================================
+    // YOUR FIREBASE CONFIG
+    // =====================================================
+
+    const firebaseConfig = {
+
+      apiKey: "YOUR_API_KEY",
+
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+
+      projectId: "YOUR_PROJECT_ID",
+
+      storageBucket: "YOUR_PROJECT.firebasestorage.app",
+
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+
+      appId: "YOUR_APP_ID"
+
+    };
+
+
+    // =====================================================
+    // THE FIREBASE ACCOUNT USED FOR THIS PAGE
+    //
+    // This email is NOT secret.
+    // Only the password is secret.
+    // =====================================================
+
+    const READER_EMAIL = "reader@example.com";
+
+
+    // =====================================================
+    // FIREBASE SETUP
+    // =====================================================
+
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    const db = getFirestore(app);
+
+
+    // Login lasts only for the current browser session.
+    await setPersistence(
+      auth,
+      browserSessionPersistence
+    );
+
+
+    // =====================================================
+    // HTML ELEMENTS
+    // =====================================================
+
+    const loginView =
+      document.getElementById("loginView");
+
+    const articleView =
+      document.getElementById("articleView");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const errorMessage =
+      document.getElementById("errorMessage");
+
+    const articleTitle =
+      document.getElementById("articleTitle");
+
+    const articleContent =
+      document.getElementById("articleContent");
+
+    const logoutBtn =
+      document.getElementById("logoutBtn");
+
+
+    // =====================================================
+    // LOGIN
+    // =====================================================
+
+    loginForm.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+        errorMessage.textContent = "";
+
+        loginBtn.disabled = true;
+
+        loginBtn.textContent = "Checking...";
+
+
+        try {
+
+          await signInWithEmailAndPassword(
+            auth,
+            READER_EMAIL,
+            passwordInput.value
+          );
+
+          passwordInput.value = "";
+
+        }
+
+        catch (error) {
+
+          console.error(error);
+
+          errorMessage.textContent =
+            "Incorrect password.";
+
+        }
+
+        finally {
+
+          loginBtn.disabled = false;
+
+          loginBtn.textContent = "Enter";
+
+        }
+
+      }
+    );
+
+
+    // =====================================================
+    // LOAD PRIVATE ARTICLE
+    // =====================================================
+
+    async function loadArticle() {
+
+      articleContent.textContent =
+        "Loading...";
+
+      try {
+
+        const articleRef = doc(
+          db,
+          "articles",
+          "varosliget"
+        );
+
+
+        const snapshot =
+          await getDoc(articleRef);
+
+
+        if (!snapshot.exists()) {
+
+          articleContent.textContent =
+            "Article not found.";
+
+          return;
+
+        }
+
+
+        const data = snapshot.data();
+
+
+        articleTitle.textContent =
+          data.title || "Városliget";
+
+
+        // IMPORTANT:
+        // textContent means the article is treated as text,
+        // not executable HTML.
+
+        articleContent.textContent =
+          data.content || "";
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        articleContent.textContent =
+          "You do not have permission to view this article.";
+
+      }
+
+    }
+
+
+    // =====================================================
+    // AUTH STATE
+    // =====================================================
+
+    onAuthStateChanged(
+      auth,
+      async (user) => {
+
+        if (user) {
+
+          loginView.hidden = true;
+
+          articleView.hidden = false;
+
+          await loadArticle();
+
+        }
+
+        else {
+
+          articleView.hidden = true;
+
+          loginView.hidden = false;
+
+          articleContent.textContent = "";
+
+        }
+
+      }
+    );
+
+
+    // =====================================================
+    // LOGOUT
+    // =====================================================
+
+    logoutBtn.addEventListener(
+      "click",
+      async () => {
+
+        await signOut(auth);
+
+      }
+    );
+
+  </script>
+
 </body>
 </html>

@@ -334,7 +334,8 @@
       box-shadow: 0 0 8px rgba(255,255,255,0.1);
       overflow: hidden;
     
-      margin: 0;
+      cursor: move;
+      user-select: none;
     }
 
 
@@ -871,6 +872,36 @@
           p.tint = document.body.classList.contains("night") ? 0xffffff : 0x000000;
         }
       }
+      const spectral = document.getElementById("spectral-window");
+
+      let dragging = false;
+      let offsetX = 0;
+      let offsetY = 0;
+      
+      spectral.addEventListener("pointerdown", (e) => {
+        dragging = true;
+      
+        const rect = spectral.getBoundingClientRect();
+      
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+      
+        spectral.setPointerCapture(e.pointerId);
+      });
+      
+      spectral.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+      
+        spectral.style.left = `${e.clientX - offsetX}px`;
+        spectral.style.top = `${e.clientY - offsetY}px`;
+      
+        spectral.style.right = "auto";
+        spectral.style.bottom = "auto";
+      });
+      
+      spectral.addEventListener("pointerup", () => {
+        dragging = false;
+      });
 
       
   </script>

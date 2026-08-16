@@ -165,14 +165,22 @@
   Say $$A = \sqrt[3]{\sum a_{i}^{3}}$$, and the same for B and C. Say $$x_{i} = \frac{a_{i}}{A}$$ and the same for $$y_{i}$$ and $$z_{i}$$.
   </p>
 
-  <p>Now this is good because $$x_{i}^3 = 1$$.</p>
+  <p>Now this is good because $$\sum x_{i}^3 = 1$$.</p>
 
   <p>
-  Now we want to prove that $$x_{i}y_{i}z_{i} \leq 1$$.
+  Now we want to prove that $$\sum x_{i}y_{i}z_{i} \leq 1$$.
   </p>
 
   <p>
-  For each $i$, we have $\frac{x_{i}^3+y_{i}^3+z_{i}^3}{3} \geq \sqrt[3]{x_{i}^3y_{i}^3z_{i}^3} = x_{i}y_{i}z_{i}$
+  By AM-GM, for each $$i$$, we have $$\frac{x_{i}^3+y_{i}^3+z_{i}^3}{3} \geq \sqrt[3]{x_{i}^3y_{i}^3z_{i}^3} = x_{i}y_{i}z_{i}$$
+  </p>
+
+  <p>
+  Find the sum of the left hand side. $$\sum \left ( \frac{x_{i}^{3}+y_{i}^{3}+z_{i}^{3}}{3} \right )$$ It is 1 because $$\sum x_{i}^3 = 1$$ and it's the same for y and z.
+  </p>
+
+  <p>
+  We've proved that $$1\geq \sum x_{i}y_{i}z_{i}$$.
   </p>
 
   <h2>Minkowski's inequality</h2>

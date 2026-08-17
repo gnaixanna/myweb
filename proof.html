@@ -222,12 +222,16 @@
   <p>Because we know that $$\sum x_{i}^q = 1, \sum y_{i}^p = 1$$</p>
   <p>$$\sum x_{i}y_{i} \leq \frac{1}{q} + \frac{1}{p} $$
   <p>Because the inequality is satisfied when $$\sum x_{i}y_{i} \leq 1$$, therefore$$\frac{1}{q} + \frac{1}{p} = 1$$</p>
+  
   <h2>Minkowski's inequality</h2>
   <h3>Updated on 08/17/2026</h3>
   <p>Some might say the prerequisite of the Hölder's inequality is so restricted and wonder what insight does it bring. It plays a vital role in Minkowski's inequality's proof (at least in this version) and although Minkowski's inequality also seems to be an irelevant fun puzzle of algebra, it is actually not. I should tell you the meaning of it after you read the proof.</p>
   <p>It looks like this: $$ \left [ \sum_{k=1}^{\infty } \left | x_{k}+y_{k}\right |^p\right ]^\frac{1}{p} \leq \left [ \sum_{k=1}^{\infty }\left |  x_{k}\right |^p \right ]^\frac{1}{p}+\left [ \sum_{k=1}^{\infty }\left |  y_{k}\right |^p \right ]^\frac{1}{p}$$</p>
-  <p>We don't like dealing with a bundle of symbols. This $$ \left [ \sum_{k=1}^{\infty } \left | x_{k}+y_{k}\right |^p\right ]^\frac{1}{p}$$ is massive and we might just call it S. </p>
-  <p>Then we are proving $$S^\frac{1}{p} \leq  \left [ \sum_{k=1}^{\infty }\left |  x_{k}\right |^p \right ]^\frac{1}{p}+\left [ \sum_{k=1}^{\infty }\left |  y_{k}\right |^p \right ]^\frac{1}{p}$$</p>
-  <p>Looking at S, we see that it is equivalent to $$\sum_{k=1}^{\infty}(x_{k}+y_{k}) +\sum_{k=1}^{\infty}(x_{k}+y_{k})^{p-1}$$ </p>
+  <p>We don't like dealing with a bundle of symbols. This $$ \left [ \sum_{k=1}^{\infty } \left | x_{k}+y_{k}\right |^p\right ]$$ is massive and we might just call it S. </p>
+  <p>Then we are trying to prove $$S^\frac{1}{p} \leq  \left [ \sum_{k=1}^{\infty }\left |  x_{k}\right |^p \right ]^\frac{1}{p}+\left [ \sum_{k=1}^{\infty }\left |  y_{k}\right |^p \right ]^\frac{1}{p}$$</p>
+  <p>Looking at S, we see that it is equivalent to $$\sum_{k=1}^{\infty}(x_{k}+y_{k})(x_{k}+y_{k})^{p-1}$$ </p>
+  <p>I would call this step the hardest step to think of in a proof. I would not be able to think of it if I had not read the proof before!</p>
+  <p>Multiply it out. We have $$\sum_{k=1}^{\infty}(x_{k})(x_{k}+y_{k})^{p-1} + \sum_{k=1}^{\infty}(y_{k})(x_{k}+y_{k})^{p-1}$$
+  <p>Let's deal with the first part of S. That is, </p>
 </body>
 </html>

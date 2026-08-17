@@ -233,8 +233,11 @@
   <p>I would call this step the hardest step to think of in a proof. I would not be able to think of it if I had not read the proof before!</p>
   <p>Multiply it out. We have $$\sum_{k=1}^{\infty}(x_{k})(x_{k}+y_{k})^{p-1} + \sum_{k=1}^{\infty}(y_{k})(x_{k}+y_{k})^{p-1}$$
   <p>Let's deal with the first part of S. That is, $$\sum_{k=1}^{\infty}(x_{k})(x_{k}+y_{k})^{p-1}$$ Now let's bring up the Hölder's inequality. </p>
-  <p>Plug in $$x_{k}, (x_{k}+y_{k})^(p-1)$$, and set a and b as the power. Let a = p because, why not? Then we have:</p>
-  <p>$$\sum_{k=1}^{\infty} x_{k}(x_{k}+y_{k})^{p-1} \leq (\sum_{k=1}^{\infty} x_{k}^{a})^\frac{1}{a}(\sum_{k=1}^{\infty}((x_{k}+y_{k})^{p-1})^{b})^\frac{1}{b}$$</p>
-  <p>Where $$\frac{1}{a} + \frac{1}{b} = 1$$</p>
+  <p>Plug in $$x_{k}, (x_{k}+y_{k})^{p-1}$$, and set a and b as the power. Let a = p because, why not? Then we have:</p>
+  <p>$$\sum_{k=1}^{\infty} x_{k}(x_{k}+y_{k})^{p-1} \leq (\sum_{k=1}^{\infty} x_{k}^{p})^\frac{1}{p}(\sum_{k=1}^{\infty}((x_{k}+y_{k})^{p-1})^{b})^\frac{1}{b}$$</p>
+  <p>Where $$\frac{1}{p} + \frac{1}{b} = 1$$</p>
+  <p>Let's examine the relation between p and b. $$\frac{1}{p} + \frac{1}{b} = 1, p+b = pb, p = b(p-1), b = \frac{p}{p-1}$$</p>
+  <p>This saves us. Look at the latter part of the inequality, $$(\sum_{k=1}^{\infty}((x_{k}+y_{k})^{p-1})^{b})^\frac{1}{b}$$</p>
+  <p>Plug in b. We get $$(\sum_{k=1}^{\infty}((x_{k}+y_{k})^{p})^\frac{p-1}{p}$$</p>
 </body>
 </html>

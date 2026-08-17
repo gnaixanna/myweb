@@ -158,29 +158,29 @@
   </p>
   <h3>Start with a tangible case first!</h3>
   <p>
-  First, starting from cases with the same power. $$\sqrt[3]{\sum a_{i}^{3}}\sqrt[3]{\sum b_{i}^{3}}\sqrt[3]{\sum c_{i}^{3}} \geq \sum a_{i}b_{i}c_{i}$$
+  First, starting from cases with the same power. Let's use 3. We want to prove that: $$\sqrt[3]{\sum a_{i}^{3}}\sqrt[3]{\sum b_{i}^{3}}\sqrt[3]{\sum c_{i}^{3}} \geq \sum a_{i}b_{i}c_{i}$$
   </p>
 
   <p>
-  Let's say (I know one would ask "why???" This is not my idea but one would see why after they see the proof) $$A = \sqrt[3]{\sum a_{i}^{3}}$$, and the same for B and C. Let's also say $$x_{i} = \frac{a_{i}}{A}$$ and the same for $$y_{i}$$ and $$z_{i}$$.
+  Let's say (I know one would ask "why???" This is not my idea but one would see why after they see the whole proof) $$A = \sqrt[3]{\sum a_{i}^{3}}$$, and the same for B and C. Let's also say $$x_{i} = \frac{a_{i}}{A}$$ and the same for y and z.
   </p>
 
-  <p>Now this is good because $$\sum x_{i}^3 = 1$$. That's because $$A^3 = \sum a_{i}^{3}$$ </p>
+  <p>Now this is very good for us because $$\sum x_{i}^3 = 1$$. That's because $$A^3 = \sum a_{i}^{3}$$ so if you sum up all the x, the denominator and the numerator becomes the same.</p>
 
   <p>
-  Because we wanted to prove $$ABC \geq \sum a_{i}b_{i}c_{i}$$, therefore, with substitution, we know that now we want to prove that $$\sum x_{i}y_{i}z_{i} \leq 1$$. 
-  </p>
-
-  <p>
-  By AM-GM, for each $$i$$, we have $$\frac{x_{i}^3+y_{i}^3+z_{i}^3}{3} \geq \sqrt[3]{x_{i}^3y_{i}^3z_{i}^3} = x_{i}y_{i}z_{i}$$
+  We wanted to prove $$ABC \geq \sum a_{i}b_{i}c_{i}$$, With substitution, we know that now we want to prove that $$\sum x_{i}y_{i}z_{i} \leq 1$$. 
   </p>
 
   <p>
-  Find the sum of the left hand side: $$\sum \left ( \frac{x_{i}^{3}+y_{i}^{3}+z_{i}^{3}}{3} \right )$$ It is 1! Because $$\sum x_{i}^3 = 1$$ and it's the same for y and z.
+  Using AM-GM on $$x_{i}^3, y_{i}^3, z_{i}^3$$, for each i, we have $$\frac{x_{i}^3+y_{i}^3+z_{i}^3}{3} \geq \sqrt[3]{x_{i}^3y_{i}^3z_{i}^3} = x_{i}y_{i}z_{i}$$
   </p>
 
   <p>
-  We've proved that $$1\geq \sum x_{i}y_{i}z_{i}$$.
+  Now let's find the sum of the left hand side: $$\sum \left ( \frac{x_{i}^{3}+y_{i}^{3}+z_{i}^{3}}{3} \right )$$ We know that $$\sum x_{i}^3 = 1$$ and it's also the same for y and z. So the sum of them is 3 and it is divided by 3... the left hand side becomes 1.
+  </p>
+
+  <p>
+  We've proved that $$1\geq \sum x_{i}y_{i}z_{i}$$. This is equivalent to the original inequality.
   </p>
   
   <h3>Let's try to wipe out the "three"!</h3>

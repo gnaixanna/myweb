@@ -357,6 +357,25 @@
       background: rgba(0, 0, 0, 0.6);
       border-bottom: 1px dashed #666;
     }
+    #close-spectral {
+      position: absolute;
+      right: 5px;
+      top: 1px;
+    
+      background: transparent;
+      border: none;
+      color: #aaa;
+    
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+    
+      cursor: pointer;
+      padding: 1px 3px;
+    }
+    
+    #close-spectral:hover {
+      color: #fff;
+    }
     
     #spectral-canvas {
       width: 100%;
@@ -428,7 +447,10 @@
     </div>
   </div>
   <div id="spectral-window">
-    <div id="spectral-handle">spectral window</div>
+    <div id="spectral-handle">
+      spectral window
+      <button id="close-spectral">[x]</button>
+    </div>
     <canvas id="spectral-canvas"></canvas>
   </div>
 
@@ -897,6 +919,12 @@
       }
       const spectral = document.getElementById("spectral-window");
       const handle = document.getElementById("spectral-handle");
+      const closeSpectral = document.getElementById("close-spectral");
+
+      closeSpectral.addEventListener("click", (e) => {
+        e.stopPropagation();
+        spectral.style.display = "none";
+      });
 
       let dragging = false;
       let offsetX = 0;

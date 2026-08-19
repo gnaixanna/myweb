@@ -398,6 +398,23 @@
     #reset-particles:hover {
       background: #bbb;
     }
+    #spectral-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 200px;
+      font-size: 20px;
+      background: #ddd;
+      border: 1px solid #999;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    
+    #spectral-toggle:hover {
+      background: #bbb;
+    }
 
 
     @keyframes flicker {
@@ -429,6 +446,7 @@
   <button id="music-toggle" title="Toggle music">🎵</button>
   <button id="mode-toggle" title="Toggle mode">🌙</button>
   <button id="reset-particles" title="Reset particles">🔁</button>
+  <button id="spectral-toggle" title="Toggle spectral window">▣</button>
 
   <h1>This is my website.<a href = "about.html"> About Me!</a></h1>
   <div class="box">
@@ -449,7 +467,6 @@
   <div id="spectral-window">
     <div id="spectral-handle">
       spectral window
-      <button id="close-spectral">[x]</button>
     </div>
     <canvas id="spectral-canvas"></canvas>
   </div>
@@ -919,11 +936,14 @@
       }
       const spectral = document.getElementById("spectral-window");
       const handle = document.getElementById("spectral-handle");
-      const closeSpectral = document.getElementById("close-spectral");
+      const spectralToggle = document.getElementById("spectral-toggle");
 
-      closeSpectral.addEventListener("click", (e) => {
-        e.stopPropagation();
-        spectral.style.display = "none";
+      spectralToggle.addEventListener("click", () => {
+        if (spectral.style.display === "none") {
+          spectral.style.display = "block";
+        } else {
+          spectral.style.display = "none";
+        }
       });
 
       let dragging = false;

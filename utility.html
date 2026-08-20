@@ -1059,7 +1059,327 @@
     }
   );
 
+  /* =====================================================
+   BACKUP / RESTORE
+   ===================================================== */
 
+const backupButton =
+  document.getElementById("backupButton");
+
+const restoreButton =
+  document.getElementById("restoreButton");
+
+const restoreFile =
+  document.getElementById("restoreFile");
+
+const lastBackup =
+  document.getElementById("lastBackup");
+
+
+
+function updateLastBackupDisplay() {
+
+  const savedTime =
+    localStorage.getItem("utilityLastBackupTime");
+
+  if (!savedTime) {
+
+    lastBackup.textContent =
+      "No backup yet.";
+
+    return;
+  }
+
+  const date =
+    new Date(savedTime);
+
+  lastBackup.textContent =
+    "Last backup: " +
+    date.toLocaleString();
+
+}
+
+
+
+/* ---------------- BACKUP ---------------- */
+
+backupButton.addEventListener(
+  "click",
+  () => {
+
+    const todos = {};
+
+
+    /*
+      Collect every daily todo list
+      stored by this Utility page.
+    */
+
+    for (
+      let i = 0;
+      i < localStorage.length;
+      i++
+    ) {
+
+      const key =
+        localStorage.key(i);
+
+      if (
+        key &&
+        key.startsWith("dailyTodos:")
+      ) {
+
+        const date =
+          key.replace(
+            "dailyTodos:",
+            ""
+          );
+
+        try {
+
+          todos[date] =
+            JSON.parse(
+              localStorage.getItem(key)
+            );
+
+        } catch (error) {
+
+          console.error(
+            "Could not backup:",
+            key
+          );
+
+        }
+
+      }
+
+    }
+
+
+    const backupTime =
+      new Date().toISOString();
+
+
+    const backupData = {
+
+      version: 1,
+
+      backupAt:
+        backupTime,
+
+      todos:
+        todos
+
+    };
+
+
+    const blob =
+      new Blob(
+        [
+          JSON.stringify(
+            backupData,
+            null,
+            2
+          )
+        ],
+        {
+          type: "application/json"
+        }
+      );
+
+
+    const url =
+      URL.createObjectURL(blob);
+
+
+    const downloadLink =
+      document.createElement("a");
+
+
+    const now =
+      new Date();
+
+    const year =
+      now.getFullYear();
+
+    const month =
+      String(
+        now.getMonth() + 1
+      ).padStart(2, "0");
+
+    const day =
+      String(
+        now.getDate()
+      ).padStart(2, "0");
+
+
+    downloadLink.href =
+      url;
+
+    downloadLink.download =
+      `utility-backup-${year}-${month}-${day}.json`;
+
+
+    document.body.appendChild(
+      downloadLink
+    );
+
+    downloadLink.click();
+
+    downloadLink.remove();
+
+    URL.revokeObjectURL(url);
+
+
+    /*
+      Save the most recent backup time
+      inside the browser too.
+    */
+
+    localStorage.setItem(
+      "utilityLastBackupTime",
+      backupTime
+    );
+
+
+    updateLastBackupDisplay();
+
+  }
+);
+
+
+
+/* ---------------- RESTORE BUTTON ---------------- */
+
+restoreButton.addEventListener(
+  "click",
+  () => {
+
+    restoreFile.click();
+
+  }
+);
+
+    
+    
+    /* ---------------- RESTORE FILE ---------------- */
+    
+    restoreFile.addEventListener(
+      "change",
+      event => {
+    
+        const file =
+          event.target.files[0];
+    
+    
+        if (!file) {
+          return;
+        }
+    
+    
+        const reader =
+          new FileReader();
+    
+    
+        reader.onload =
+          function(e) {
+    
+            try {
+    
+              const backupData =
+                JSON.parse(
+                  e.target.result
+                );
+    
+    
+              if (
+                !backupData.todos ||
+                typeof backupData.todos !== "object"
+              ) {
+    
+                alert(
+                  "This does not look like a valid Utility backup."
+                );
+    
+                return;
+    
+              }
+    
+    
+              /*
+                Restore each day's todo list.
+              */
+    
+              Object.entries(
+                backupData.todos
+              ).forEach(
+                ([date, tasks]) => {
+    
+                  localStorage.setItem(
+    
+                    "dailyTodos:" + date,
+    
+                    JSON.stringify(tasks)
+    
+                  );
+    
+                }
+              );
+    
+    
+              /*
+                Restore backup timestamp too.
+              */
+    
+              if (backupData.backupAt) {
+    
+                localStorage.setItem(
+                  "utilityLastBackupTime",
+                  backupData.backupAt
+                );
+    
+              }
+    
+    
+              updateLastBackupDisplay();
+    
+              renderCalendar();
+    
+              renderTodos();
+    
+    
+              alert(
+                "Backup restored."
+              );
+    
+    
+            } catch (error) {
+    
+              alert(
+                "The backup file could not be read."
+              );
+    
+            }
+    
+          };
+    
+    
+        reader.readAsText(file);
+    
+    
+        /*
+          Allows selecting the same backup file
+          again later.
+        */
+    
+        restoreFile.value = "";
+    
+      }
+    );
+    
+    
+    
+    updateLastBackupDisplay();
   /* =====================================================
      START
      ===================================================== */

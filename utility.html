@@ -283,6 +283,115 @@
       font-size: 12px;
       margin-left: 5px;
     }
+    /* ---------------- ON THE MOVE ---------------- */
+
+    .on-the-move {
+      position: fixed;
+      right: 40px;
+      top: 150px;
+    
+      width: 300px;
+      max-height: calc(100vh - 190px);
+      overflow-y: auto;
+    
+      border: 1px dashed gray;
+      padding: 18px;
+    
+      background-color: #fcfcfc;
+      box-sizing: border-box;
+    }
+    
+    .on-the-move-title {
+      font-size: 19px;
+      color: darkblue;
+      margin-bottom: 5px;
+    }
+    
+    .week-label {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 18px;
+    }
+    
+    .weekly-task {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      margin-bottom: 8px;
+    }
+    
+    .weekly-task input[type="checkbox"] {
+      margin-top: 6px;
+      cursor: pointer;
+    }
+    
+    .weekly-task-text {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+    
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      line-height: 1.4;
+      padding: 3px;
+    }
+    
+    .weekly-task-text:focus {
+      outline: 1px dashed #aaa;
+      background: white;
+    }
+    
+    .weekly-task.completed .weekly-task-text {
+      text-decoration: line-through;
+      color: #999;
+    }
+    
+    .weekly-delete-task {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 16px;
+      color: #999;
+      cursor: pointer;
+    }
+    
+    .weekly-delete-task:hover {
+      color: darkred;
+    }
+    
+    .weekly-add-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 15px;
+    }
+    
+    #newWeeklyTaskInput {
+      flex: 1;
+      min-width: 0;
+    
+      border: none;
+      border-bottom: 1px dashed #777;
+      background: transparent;
+    
+      font-family: inherit;
+      font-size: 13px;
+      padding: 4px;
+    }
+    
+    #newWeeklyTaskInput:focus {
+      outline: none;
+      border-bottom: 1px solid #333;
+    }
+    
+    #addWeeklyTaskButton {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 19px;
+      color: darkgreen;
+      cursor: pointer;
+    }
 
   </style>
 </head>
@@ -442,7 +551,27 @@
     </p>
 
   </div>
-
+    <div class="on-the-move">
+    
+      <div class="on-the-move-title">
+        On the Move
+      </div>
+    
+      <div id="weekLabel" class="week-label"></div>
+    
+      <div id="weeklyTodoList"></div>
+    
+      <div class="weekly-add-row">
+        <input
+          id="newWeeklyTaskInput"
+          type="text"
+          placeholder="something to do this week..."
+        >
+    
+        <button id="addWeeklyTaskButton">+</button>
+      </div>
+    
+    </div>
 
 <script>
 
@@ -1126,7 +1255,8 @@ backupButton.addEventListener(
 
       if (
         key &&
-        key.startsWith("dailyTodos:")
+        key.startsWith("dailyTodos:") ||
+        key.startsWith("weeklyTodos:")
       ) {
 
         const date =
@@ -1380,6 +1510,355 @@ restoreButton.addEventListener(
     
     
     updateLastBackupDisplay();
+
+  /* =====================================================
+   ON THE MOVE — WEEKLY TODO
+   ===================================================== */
+
+const weeklyTodoList =
+  document.getElementById("weeklyTodoList");
+
+const newWeeklyTaskInput =
+  document.getElementById("newWeeklyTaskInput");
+
+const addWeeklyTaskButton =
+  document.getElementById("addWeeklyTaskButton");
+
+const weekLabel =
+  document.getElementById("weekLabel");
+
+
+/*
+  Find Monday of the week containing a date.
+*/
+
+function getMonday(date) {
+
+  const result =
+    new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+
+  const day =
+    result.getDay();
+
+  const difference =
+    day === 0
+      ? -6
+      : 1 - day;
+
+  result.setDate(
+    result.getDate() + difference
+  );
+
+  return result;
+
+}
+
+
+/*
+  Each week gets its own storage key.
+
+  Example:
+  weeklyTodos:2026-08-17
+*/
+
+function weeklyKey() {
+
+  const monday =
+    getMonday(new Date());
+
+  return (
+    "weeklyTodos:" +
+    dateKey(monday)
+  );
+
+}
+
+
+function getWeeklyTasks() {
+
+  const saved =
+    localStorage.getItem(
+      weeklyKey()
+    );
+
+  if (!saved) {
+    return [];
+  }
+
+  try {
+
+    return JSON.parse(saved);
+
+  } catch (error) {
+
+    return [];
+
+  }
+
+}
+
+
+function saveWeeklyTasks(tasks) {
+
+  localStorage.setItem(
+    weeklyKey(),
+    JSON.stringify(tasks)
+  );
+
+}
+
+
+/* ---------------- WEEK LABEL ---------------- */
+
+function renderWeekLabel() {
+
+  const monday =
+    getMonday(new Date());
+
+  const sunday =
+    new Date(monday);
+
+  sunday.setDate(
+    monday.getDate() + 6
+  );
+
+
+  const start =
+    monday.toLocaleDateString(
+      "en-US",
+      {
+        month: "short",
+        day: "numeric"
+      }
+    );
+
+
+  const end =
+    sunday.toLocaleDateString(
+      "en-US",
+      {
+        month: "short",
+        day: "numeric"
+      }
+    );
+
+
+  weekLabel.textContent =
+    start + " — " + end;
+
+}
+
+
+/* ---------------- RENDER WEEKLY TASKS ---------------- */
+
+function renderWeeklyTodos() {
+
+  weeklyTodoList.innerHTML =
+    "";
+
+  const tasks =
+    getWeeklyTasks();
+
+
+  tasks.forEach(
+    (task, index) => {
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "weekly-task";
+
+
+      if (task.completed) {
+
+        row.classList.add(
+          "completed"
+        );
+
+      }
+
+
+      /* CHECKBOX */
+
+      const checkbox =
+        document.createElement("input");
+
+      checkbox.type =
+        "checkbox";
+
+      checkbox.checked =
+        task.completed;
+
+
+      checkbox.addEventListener(
+        "change",
+        () => {
+
+          const tasks =
+            getWeeklyTasks();
+
+          tasks[index].completed =
+            checkbox.checked;
+
+          saveWeeklyTasks(tasks);
+
+          renderWeeklyTodos();
+
+        }
+      );
+
+
+      /* EDITABLE TEXT */
+
+      const textInput =
+        document.createElement("input");
+
+      textInput.type =
+        "text";
+
+      textInput.className =
+        "weekly-task-text";
+
+      textInput.value =
+        task.text;
+
+
+      textInput.addEventListener(
+        "input",
+        () => {
+
+          const tasks =
+            getWeeklyTasks();
+
+          tasks[index].text =
+            textInput.value;
+
+          saveWeeklyTasks(tasks);
+
+        }
+      );
+
+
+      /* DELETE */
+
+      const deleteButton =
+        document.createElement("button");
+
+      deleteButton.className =
+        "weekly-delete-task";
+
+      deleteButton.textContent =
+        "×";
+
+
+      deleteButton.addEventListener(
+        "click",
+        () => {
+
+          const tasks =
+            getWeeklyTasks();
+
+          tasks.splice(
+            index,
+            1
+          );
+
+          saveWeeklyTasks(tasks);
+
+          renderWeeklyTodos();
+
+        }
+      );
+
+
+      row.appendChild(
+        checkbox
+      );
+
+      row.appendChild(
+        textInput
+      );
+
+      row.appendChild(
+        deleteButton
+      );
+
+
+      weeklyTodoList.appendChild(
+        row
+      );
+
+    }
+  );
+
+}
+
+
+    /* ---------------- ADD WEEKLY TASK ---------------- */
+    
+    function addWeeklyTask() {
+    
+      const text =
+        newWeeklyTaskInput.value.trim();
+    
+      if (!text) {
+        return;
+      }
+    
+    
+      const tasks =
+        getWeeklyTasks();
+    
+    
+      tasks.push({
+    
+        text: text,
+        completed: false
+    
+      });
+    
+    
+      saveWeeklyTasks(tasks);
+    
+    
+      newWeeklyTaskInput.value =
+        "";
+    
+    
+      renderWeeklyTodos();
+    
+      newWeeklyTaskInput.focus();
+    
+    }
+    
+    
+    addWeeklyTaskButton.addEventListener(
+      "click",
+      addWeeklyTask
+    );
+    
+    
+    newWeeklyTaskInput.addEventListener(
+      "keydown",
+      event => {
+    
+        if (event.key === "Enter") {
+    
+          addWeeklyTask();
+    
+        }
+    
+      }
+    );
+    
+    
+    renderWeekLabel();
+    renderWeeklyTodos();
   /* =====================================================
      START
      ===================================================== */

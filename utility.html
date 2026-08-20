@@ -256,6 +256,33 @@
       background: #f1f1f1;
       text-decoration: underline;
     }
+    .backup-area {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .backup-area button {
+      border: 1px dashed #888;
+      background: transparent;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      padding: 5px 9px;
+      cursor: pointer;
+      color: darkgreen;
+    }
+    
+    .backup-area button:hover {
+      background: #f1f1f1;
+    }
+    
+    #lastBackup {
+      color: #777;
+      font-size: 12px;
+      margin-left: 5px;
+    }
 
   </style>
 </head>
@@ -385,6 +412,28 @@
 
     <div class="note">
       Click a task to edit it. Everything is saved automatically.
+    </div>
+        <div class="backup-area">
+    
+      <button id="backupButton">
+        Backup
+      </button>
+    
+      <button id="restoreButton">
+        Restore
+      </button>
+    
+      <input
+        type="file"
+        id="restoreFile"
+        accept=".json,application/json"
+        style="display: none;"
+      >
+    
+      <span id="lastBackup">
+        No backup yet.
+      </span>
+    
     </div>
 
 

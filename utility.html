@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Utility</title>
+
   <style>
     body {
       background-color: #fcfcfc;
@@ -10,26 +11,32 @@
       color: #222;
       margin: 40px;
     }
+
     h1 {
       color: darkblue;
     }
+
     nav {
       margin-bottom: 30px;
       border-bottom: 1px dashed gray;
       padding-bottom: 10px;
     }
+
     nav a {
       margin-right: 20px;
       text-decoration: none;
       color: darkgreen;
       font-weight: bold;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
+
     .content {
       max-width: 700px;
     }
+
     .right-column {
       position: absolute;
       right: 60px;
@@ -44,14 +51,193 @@
       border: 1px dashed #aaa;
       border-radius: 4px;
     }
-    .content {
-      max-width: 600px;
-    }
-    .box { border: 1px dashed gray; padding: 20px; max-width: 600px; }
 
+    .box {
+      border: 1px dashed gray;
+      padding: 20px;
+      max-width: 700px;
+    }
+
+
+    /* ---------------- CALENDAR ---------------- */
+
+    .calendar-header {
+      width: 350px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
+
+    .calendar-header button {
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 18px;
+      cursor: pointer;
+      color: darkgreen;
+    }
+
+    .calendar-header button:hover {
+      text-decoration: underline;
+    }
+
+    #monthTitle {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .calendar-weekdays,
+    .calendar-days {
+      width: 350px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+
+    .calendar-weekdays {
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .calendar-day {
+      height: 35px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .calendar-day:hover {
+      text-decoration: underline;
+    }
+
+    .calendar-day.today {
+      border: 1px dashed #888;
+    }
+
+    .calendar-day.selected {
+      background: darkblue;
+      color: white;
+    }
+
+    .calendar-day.empty {
+      cursor: default;
+    }
+
+
+    /* ---------------- TODO ---------------- */
+
+    .routine-divider {
+      border: none;
+      border-top: 1px dashed #aaa;
+      margin: 25px 0 20px 0;
+    }
+
+    .selected-date-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: darkblue;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 7px;
+    }
+
+    .todo-item input[type="checkbox"] {
+      margin-top: 7px;
+      cursor: pointer;
+    }
+
+    .todo-text {
+      width: 100%;
+      border: none;
+      background: transparent;
+      font-family: "Courier New", monospace;
+      font-size: 15px;
+      line-height: 1.4;
+      padding: 4px;
+    }
+
+    .todo-text:focus {
+      outline: 1px dashed #aaa;
+      background: #fff;
+    }
+
+    .todo-item.completed .todo-text {
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    .delete-task {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 17px;
+      color: #999;
+      cursor: pointer;
+      margin-top: 2px;
+    }
+
+    .delete-task:hover {
+      color: darkred;
+    }
+
+    .add-task-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    #newTaskInput {
+      width: 400px;
+      border: none;
+      border-bottom: 1px dashed #777;
+      background: transparent;
+      font-family: inherit;
+      font-size: 15px;
+      padding: 5px;
+    }
+
+    #newTaskInput:focus {
+      outline: none;
+      border-bottom: 1px solid #333;
+    }
+
+    #addTaskButton {
+      border: none;
+      background: none;
+      font-family: inherit;
+      color: darkgreen;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #addTaskButton:hover {
+      text-decoration: underline;
+    }
+
+    .note {
+      color: #777;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .bottom-link {
+      margin-top: 30px;
+    }
 
   </style>
 </head>
+
+
 <body>
 
   <h1>Utility</h1>
@@ -63,24 +249,717 @@
     <a href="math.html">Math</a>
     <a href="thoughts.html">Thoughts</a>
   </nav>
+
+
   <div class="box">
-    <p>Daily Routine (Your own due is one day before the actual due)</p>
-    <ul>
-      <li>Gmail</li>
-      <li>Language Bird Mailbox</li>
-      <li>Pronto</li>
-      <li>Check Math HW or Prep in the Modules part (Mostly Th,F,T,W) </li>
-      <li>Check HPS HW on "THIS WEEK" section (F,Sun,T,W and do the work over the week so actually you can just check it every day)</li>
-      <li>Check TAA HW on Modules/Assignment page</li>
-      <li>Statisitcs</li>
-      <li>Physics</li>
-    </ul>
-    <p><a href="page2.html">index.txt</a></p>
+
+    <p>
+      Daily Routine
+      (Your own due is one day before the actual due)
+    </p>
+
+
+    <!-- CALENDAR -->
+
+    <div class="calendar-header">
+
+      <button id="prevMonth">←</button>
+
+      <span id="monthTitle"></span>
+
+      <button id="nextMonth">→</button>
+
+    </div>
+
+
+    <div class="calendar-weekdays">
+
+      <span>Mon</span>
+      <span>Tue</span>
+      <span>Wed</span>
+      <span>Thu</span>
+      <span>Fri</span>
+      <span>Sat</span>
+      <span>Sun</span>
+
+    </div>
+
+
+    <div
+      id="calendarDays"
+      class="calendar-days">
+    </div>
+
+
+    <hr class="routine-divider">
+
+
+    <!-- SELECTED DAY -->
+
+    <div
+      id="selectedDateTitle"
+      class="selected-date-title">
+    </div>
+
+
+    <!-- TODO LIST -->
+
+    <div id="todoList"></div>
+
+
+    <!-- ADD NEW TASK -->
+
+    <div class="add-task-row">
+
+      <input
+        id="newTaskInput"
+        type="text"
+        placeholder="new task..."
+      >
+
+      <button id="addTaskButton">+</button>
+
+    </div>
+
+
+    <div class="note">
+      Click a task to edit it. Everything is saved automatically.
+    </div>
+
+
+    <p class="bottom-link">
+      <a href="page2.html">index.txt</a>
+    </p>
+
   </div>
-  <div class="content">
-    
-  </div>
-  
+
+
+<script>
+
+  /* =====================================================
+     DEFAULT DAILY ROUTINE
+     ===================================================== */
+
+  const defaultTasks = [
+
+    "Gmail",
+
+    "Language Bird Mailbox",
+
+    "Pronto",
+
+    "Check Math HW or Prep in the Modules part (Mostly Th, F, T, W)",
+
+    'Check HPS HW on "THIS WEEK" section (F, Sun, T, W and do the work over the week so actually you can just check it every day)',
+
+    "Check TAA HW on Modules/Assignment page",
+
+    "Statistics",
+
+    "Physics"
+
+  ];
+
+
+  /* =====================================================
+     ELEMENTS
+     ===================================================== */
+
+  const calendarDays =
+    document.getElementById("calendarDays");
+
+  const monthTitle =
+    document.getElementById("monthTitle");
+
+  const selectedDateTitle =
+    document.getElementById("selectedDateTitle");
+
+  const todoList =
+    document.getElementById("todoList");
+
+  const newTaskInput =
+    document.getElementById("newTaskInput");
+
+  const addTaskButton =
+    document.getElementById("addTaskButton");
+
+  const prevMonth =
+    document.getElementById("prevMonth");
+
+  const nextMonth =
+    document.getElementById("nextMonth");
+
+
+  /* =====================================================
+     DATE
+     ===================================================== */
+
+  const today = new Date();
+
+  let displayedYear =
+    today.getFullYear();
+
+  let displayedMonth =
+    today.getMonth();
+
+  let selectedDate =
+    new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+
+
+  function dateKey(date) {
+
+    const year =
+      date.getFullYear();
+
+    const month =
+      String(
+        date.getMonth() + 1
+      ).padStart(2, "0");
+
+    const day =
+      String(
+        date.getDate()
+      ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+
+  }
+
+
+  /* =====================================================
+     STORAGE
+     ===================================================== */
+
+  function getTasks(date) {
+
+    const key =
+      "dailyTodos:" + dateKey(date);
+
+    const saved =
+      localStorage.getItem(key);
+
+
+    /*
+      If this date has never been opened before,
+      automatically create the normal daily routine.
+    */
+
+    if (saved === null) {
+
+      const tasks =
+        defaultTasks.map(text => ({
+
+          text: text,
+          completed: false
+
+        }));
+
+      saveTasks(date, tasks);
+
+      return tasks;
+
+    }
+
+
+    return JSON.parse(saved);
+
+  }
+
+
+  function saveTasks(date, tasks) {
+
+    const key =
+      "dailyTodos:" + dateKey(date);
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(tasks)
+    );
+
+  }
+
+
+  /* =====================================================
+     TODO LIST
+     ===================================================== */
+
+  function renderTodos() {
+
+    selectedDateTitle.textContent =
+      selectedDate.toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }
+      );
+
+
+    todoList.innerHTML = "";
+
+
+    const tasks =
+      getTasks(selectedDate);
+
+
+    tasks.forEach(
+      (task, index) => {
+
+
+        const row =
+          document.createElement("div");
+
+        row.className =
+          "todo-item";
+
+
+        if (task.completed) {
+
+          row.classList.add(
+            "completed"
+          );
+
+        }
+
+
+        /* CHECKBOX */
+
+        const checkbox =
+          document.createElement("input");
+
+        checkbox.type =
+          "checkbox";
+
+        checkbox.checked =
+          task.completed;
+
+
+        checkbox.addEventListener(
+          "change",
+          () => {
+
+            const tasks =
+              getTasks(selectedDate);
+
+            tasks[index].completed =
+              checkbox.checked;
+
+            saveTasks(
+              selectedDate,
+              tasks
+            );
+
+            renderTodos();
+
+          }
+        );
+
+
+        /* EDITABLE TASK TEXT */
+
+        const textInput =
+          document.createElement("input");
+
+        textInput.type =
+          "text";
+
+        textInput.className =
+          "todo-text";
+
+        textInput.value =
+          task.text;
+
+
+        textInput.addEventListener(
+          "input",
+          () => {
+
+            const tasks =
+              getTasks(selectedDate);
+
+            tasks[index].text =
+              textInput.value;
+
+            saveTasks(
+              selectedDate,
+              tasks
+            );
+
+          }
+        );
+
+
+        /* DELETE */
+
+        const deleteButton =
+          document.createElement("button");
+
+        deleteButton.className =
+          "delete-task";
+
+        deleteButton.textContent =
+          "×";
+
+
+        deleteButton.addEventListener(
+          "click",
+          () => {
+
+            const tasks =
+              getTasks(selectedDate);
+
+            tasks.splice(
+              index,
+              1
+            );
+
+            saveTasks(
+              selectedDate,
+              tasks
+            );
+
+            renderTodos();
+
+          }
+        );
+
+
+        row.appendChild(
+          checkbox
+        );
+
+        row.appendChild(
+          textInput
+        );
+
+        row.appendChild(
+          deleteButton
+        );
+
+
+        todoList.appendChild(
+          row
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =====================================================
+     ADD TASK
+     ===================================================== */
+
+  function addTask() {
+
+    const text =
+      newTaskInput.value.trim();
+
+
+    if (!text) {
+      return;
+    }
+
+
+    const tasks =
+      getTasks(selectedDate);
+
+
+    tasks.push({
+
+      text: text,
+      completed: false
+
+    });
+
+
+    saveTasks(
+      selectedDate,
+      tasks
+    );
+
+
+    newTaskInput.value =
+      "";
+
+
+    renderTodos();
+
+
+    newTaskInput.focus();
+
+  }
+
+
+  addTaskButton.addEventListener(
+    "click",
+    addTask
+  );
+
+
+  newTaskInput.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Enter") {
+
+        addTask();
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     CALENDAR
+     ===================================================== */
+
+  function renderCalendar() {
+
+    calendarDays.innerHTML =
+      "";
+
+
+    monthTitle.textContent =
+      new Date(
+        displayedYear,
+        displayedMonth,
+        1
+      ).toLocaleDateString(
+        "en-US",
+        {
+          month: "long",
+          year: "numeric"
+        }
+      );
+
+
+    const firstDay =
+      new Date(
+        displayedYear,
+        displayedMonth,
+        1
+      );
+
+
+    const daysInMonth =
+      new Date(
+        displayedYear,
+        displayedMonth + 1,
+        0
+      ).getDate();
+
+
+    /*
+      JavaScript:
+      Sunday = 0
+      Monday = 1
+
+      Calendar here starts Monday.
+    */
+
+    const startingPosition =
+      (firstDay.getDay() + 6) % 7;
+
+
+    /* EMPTY CELLS */
+
+    for (
+      let i = 0;
+      i < startingPosition;
+      i++
+    ) {
+
+      const empty =
+        document.createElement("div");
+
+      empty.className =
+        "calendar-day empty";
+
+      calendarDays.appendChild(
+        empty
+      );
+
+    }
+
+
+    /* DAYS */
+
+    for (
+      let day = 1;
+      day <= daysInMonth;
+      day++
+    ) {
+
+      const date =
+        new Date(
+          displayedYear,
+          displayedMonth,
+          day
+        );
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "calendar-day";
+
+      button.textContent =
+        day;
+
+
+      /* TODAY */
+
+      if (
+        dateKey(date) ===
+        dateKey(today)
+      ) {
+
+        button.classList.add(
+          "today"
+        );
+
+      }
+
+
+      /* SELECTED DAY */
+
+      if (
+        dateKey(date) ===
+        dateKey(selectedDate)
+      ) {
+
+        button.classList.add(
+          "selected"
+        );
+
+      }
+
+
+      /* CLICK DATE */
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          selectedDate =
+            new Date(
+              displayedYear,
+              displayedMonth,
+              day
+            );
+
+          renderCalendar();
+
+          renderTodos();
+
+        }
+      );
+
+
+      calendarDays.appendChild(
+        button
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     PREVIOUS MONTH
+     ===================================================== */
+
+  prevMonth.addEventListener(
+    "click",
+    () => {
+
+      displayedMonth--;
+
+
+      if (displayedMonth < 0) {
+
+        displayedMonth = 11;
+
+        displayedYear--;
+
+      }
+
+
+      selectedDate =
+        new Date(
+          displayedYear,
+          displayedMonth,
+          1
+        );
+
+
+      renderCalendar();
+
+      renderTodos();
+
+    }
+  );
+
+
+  /* =====================================================
+     NEXT MONTH
+     ===================================================== */
+
+  nextMonth.addEventListener(
+    "click",
+    () => {
+
+      displayedMonth++;
+
+
+      if (displayedMonth > 11) {
+
+        displayedMonth = 0;
+
+        displayedYear++;
+
+      }
+
+
+      selectedDate =
+        new Date(
+          displayedYear,
+          displayedMonth,
+          1
+        );
+
+
+      renderCalendar();
+
+      renderTodos();
+
+    }
+  );
+
+
+  /* =====================================================
+     START
+     ===================================================== */
+
+  renderCalendar();
+
+  renderTodos();
+
+</script>
+
 
 </body>
 </html>

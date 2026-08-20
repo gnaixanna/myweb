@@ -1205,29 +1205,22 @@ const lastBackup =
   document.getElementById("lastBackup");
 
 
-
 function updateLastBackupDisplay() {
 
   const savedTime =
     localStorage.getItem("utilityLastBackupTime");
 
   if (!savedTime) {
-
-    lastBackup.textContent =
-      "No backup yet.";
-
+    lastBackup.textContent = "No backup yet.";
     return;
   }
 
-  const date =
-    new Date(savedTime);
+  const date = new Date(savedTime);
 
   lastBackup.textContent =
     "Last backup: " +
     date.toLocaleString();
-
 }
-
 
 
 /* ---------------- BACKUP ---------------- */
@@ -1236,13 +1229,7 @@ backupButton.addEventListener(
   "click",
   () => {
 
-    const todos = {};
-
-
-    /*
-      Collect every daily todo list
-      stored by this Utility page.
-    */
+    const storage = {};
 
     for (
       let i = 0;
@@ -1255,31 +1242,14 @@ backupButton.addEventListener(
 
       if (
         key &&
-        key.startsWith("dailyTodos:") ||
-        key.startsWith("weeklyTodos:")
+        (
+          key.startsWith("dailyTodos:") ||
+          key.startsWith("weeklyTodos:")
+        )
       ) {
 
-        const date =
-          key.replace(
-            "dailyTodos:",
-            ""
-          );
-
-        try {
-
-          todos[date] =
-            JSON.parse(
-              localStorage.getItem(key)
-            );
-
-        } catch (error) {
-
-          console.error(
-            "Could not backup:",
-            key
-          );
-
-        }
+        storage[key] =
+          localStorage.getItem(key);
 
       }
 
@@ -1292,13 +1262,13 @@ backupButton.addEventListener(
 
     const backupData = {
 
-      version: 1,
+      version: 2,
 
       backupAt:
         backupTime,
 
-      todos:
-        todos
+      storage:
+        storage
 
     };
 
@@ -1361,11 +1331,6 @@ backupButton.addEventListener(
     URL.revokeObjectURL(url);
 
 
-    /*
-      Save the most recent backup time
-      inside the browser too.
-    */
-
     localStorage.setItem(
       "utilityLastBackupTime",
       backupTime
@@ -1376,6 +1341,130 @@ backupButton.addEventListener(
 
   }
 );
+
+
+/* ---------------- RESTORE BUTTON ---------------- */
+
+restoreButton.addEventListener(
+  "click",
+  () => {
+
+    restoreFile.click();
+
+  }
+);
+
+
+/* ---------------- RESTORE FILE ---------------- */
+
+restoreFile.addEventListener(
+  "change",
+  event => {
+
+    const file =
+      event.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload =
+      function(e) {
+
+        try {
+
+          const backupData =
+            JSON.parse(
+              e.target.result
+            );
+
+
+          if (
+            !backupData.storage ||
+            typeof backupData.storage !== "object"
+          ) {
+
+            alert(
+              "This does not look like a valid Utility backup."
+            );
+
+            return;
+
+          }
+
+
+          Object.entries(
+            backupData.storage
+          ).forEach(
+            ([key, value]) => {
+
+              if (
+                key.startsWith("dailyTodos:") ||
+                key.startsWith("weeklyTodos:")
+              ) {
+
+                localStorage.setItem(
+                  key,
+                  value
+                );
+
+              }
+
+            }
+          );
+
+
+          if (backupData.backupAt) {
+
+            localStorage.setItem(
+              "utilityLastBackupTime",
+              backupData.backupAt
+            );
+
+          }
+
+
+          updateLastBackupDisplay();
+
+          renderCalendar();
+
+          renderTodos();
+
+          renderWeekLabel();
+
+          renderWeeklyTodos();
+
+
+          alert(
+            "Backup restored."
+          );
+
+
+        } catch (error) {
+
+          alert(
+            "The backup file could not be read."
+          );
+
+        }
+
+      };
+
+
+    reader.readAsText(file);
+
+    restoreFile.value = "";
+
+  }
+);
+
+
+updateLastBackupDisplay();
 
 
 
